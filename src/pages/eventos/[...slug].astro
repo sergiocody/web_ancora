@@ -1,5 +1,5 @@
 ---
-/* BLOG POST PAGES */
+/* EVENTOS POST PAGES */
 import { getArchiveNav } from "@util/helpers";
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
@@ -10,13 +10,13 @@ import PageLayoutWide from "@layouts/PageLayoutWide.astro";
 import { t } from "@util/translate";
 
 export async function getStaticPaths() {
-  const posts = (await getCollection("blog")).sort(
+  const posts = (await getCollection("eventos")).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
   );
   const count = posts.length;
   return posts.map((post, index) => {
-    let next: CollectionEntry<"blog"> | null = null;
-    let prev: CollectionEntry<"blog"> | null = null;
+    let next: CollectionEntry<"eventos"> | null = null;
+    let prev: CollectionEntry<"eventos"> | null = null;
     const archiveNav = getArchiveNav(count, index, posts);
     next = archiveNav.next;
     prev = archiveNav.prev;
@@ -44,7 +44,7 @@ export async function getStaticPaths() {
   });
 }
 
-type Props = CollectionEntry<"blog">;
+type Props = CollectionEntry<"eventos">;
 const base_url = import.meta.env.BLOG_SLUG;
 const post = Astro.props;
 const { Content } = await post.render();

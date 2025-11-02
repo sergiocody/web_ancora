@@ -114,7 +114,7 @@ const style = z.object({
 	hero_class: z.string().optional()
 })
 
-const blog = defineCollection({
+const eventos = defineCollection({
 	type: 'content',
 	schema: z.object({
 		title: z.string(),
@@ -642,4 +642,4 @@ const config = defineCollection({
 	})
 })
 
-export const collections = { blog, page, menu, project, product, config }
+export const collections = { eventos, page, menu, project, product, config }

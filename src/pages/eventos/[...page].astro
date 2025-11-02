@@ -1,23 +1,23 @@
 ---
-/* BLOG ARCHIVE PAGES */
+/* EVENTOS ARCHIVE PAGES */
 import { getEntry } from "astro:content";
 import PageLayoutArchive from "@layouts/PageLayoutArchive.astro";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths({ paginate }) {
-  const posts = (await getCollection("blog")).sort(
+  const posts = (await getCollection("eventos")).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
   );
-  const { data } = await getEntry("config", "blog");
+  const { data } = await getEntry("config", "eventos");
 
   return paginate(posts, { pageSize: data.per_page });
 }
 const base_url = import.meta.env.BLOG_SLUG;
 const { page } = Astro.props;
  
-const { data } = await getEntry("config", "blog");
+const { data } = await getEntry("config", "eventos");
 
-const posts = (await getCollection("blog")).sort(
+const posts = (await getCollection("eventos")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
 );
 /* get the used tags */

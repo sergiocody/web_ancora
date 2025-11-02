@@ -22,9 +22,9 @@ const {
 
 let base_url;
 let posts;
-if (page_type === "blog") {
+if (page_type === "blog" || page_type === "eventos") {
   base_url = import.meta.env.BLOG_SLUG;
-  posts = (await getCollection("blog")).sort(
+  posts = (await getCollection("eventos")).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
   );
 
