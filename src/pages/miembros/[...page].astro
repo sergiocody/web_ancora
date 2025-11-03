@@ -15,11 +15,12 @@ export async function getStaticPaths({ paginate }) {
 const posts = (await getCollection("miembros")).sort(
   (a, b) => a.data.date.valueOf() - b.data.date.valueOf(),
 );
-const allTags = posts.map((post) => post.data.tag).filter((post) => !!post);
-const tag = [...new Set(allTags.flat(1))];
 const base_url = import.meta.env.PORTFOLIO_SLUG;
 const { page } = Astro.props;
 const { data } = await getEntry("config", "miembros");
+
+// Usar el orden de project_tags del config en lugar del orden automático
+const tag = data.project_tags ? data.project_tags.map((t) => t.name) : [];
 ---
 
 <PageLayoutArchive {page} {tag} {data} {base_url} />

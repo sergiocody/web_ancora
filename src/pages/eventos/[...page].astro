@@ -20,9 +20,8 @@ const { data } = await getEntry("config", "eventos");
 const posts = (await getCollection("eventos")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
 );
-/* get the used tags */
-const allFilters = posts.map((post) => post.data.tag).filter((post) => !!post);
-const filters = [...new Set(allFilters.flat(1))];
+/* Usar el orden de blog_tags del config */
+const filters = data.blog_tags ? data.blog_tags.map((t) => t.name) : [];
 ---
 
 <PageLayoutArchive {page} {filters} {data} {base_url} />
