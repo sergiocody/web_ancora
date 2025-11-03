@@ -1,5 +1,5 @@
 ---
-/* BLOG POST PAGES */
+/* MIEMBROS POST PAGES */
 import type { CollectionEntry } from "astro:content";
 import { getArchiveNav } from "@util/helpers";
 import { getCollection } from "astro:content";
@@ -9,13 +9,13 @@ import PageLayoutSplit from "@layouts/PageLayoutSplit.astro";
 import PageLayoutWide from "@layouts/PageLayoutWide.astro";
 import { t } from "@util/translate";
 export async function getStaticPaths() {
-  const posts = (await getCollection("project")).sort(
+  const posts = (await getCollection("miembros")).sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
   );
   const count = posts.length;
   return posts.map((post, index) => {
-    let next: CollectionEntry<"project"> | null = null;
-    let prev: CollectionEntry<"project"> | null = null;
+    let next: CollectionEntry<"miembros"> | null = null;
+    let prev: CollectionEntry<"miembros"> | null = null;
     const archiveNav = getArchiveNav(count, index, posts);
 
     next = archiveNav.next;
@@ -43,7 +43,7 @@ export async function getStaticPaths() {
     };
   });
 }
-type Props = CollectionEntry<"project">;
+type Props = CollectionEntry<"miembros">;
 const base_url = import.meta.env.PORTFOLIO_SLUG;
 const post = Astro.props;
 const { Content } = await post.render();

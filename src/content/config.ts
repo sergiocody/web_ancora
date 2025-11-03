@@ -167,7 +167,7 @@ const eventos = defineCollection({
 	})
 })
 
-const project = defineCollection({
+const miembros = defineCollection({
 	type: 'content',
 	schema: z.object({
 		title: z.string(),
@@ -642,4 +642,4 @@ const config = defineCollection({
 	})
 })
 
-export const collections = { eventos, page, menu, project, product, config }
+export const collections = { eventos, page, menu, miembros, product, config }

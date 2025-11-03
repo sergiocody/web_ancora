@@ -5,8 +5,6 @@
 
 
 
-A Universe of Possibilities: Blogs, Portfolios, Webshop, Restaurant Menus, and Beyond.
-
 
 
 ![Nebulix](https://nebulix.unfolding.io/screenshots/nebulix-00-start.jpg)

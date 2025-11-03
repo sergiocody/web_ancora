@@ -10,7 +10,7 @@
     "mdx",
     "markdown"
   ],
-  "description": "Fast & Green Theme Based on Astro + Static CMS. A Universe of Possibilities: Blogs, Portfolios, Menus, Webshop & Beyond",
+  "description": "Ancora Grupo Vocal",
   "scripts": {
     "postbuild": "pagefind --site dist --output-path dist/_pagefind",
     "dev": "astro dev",
