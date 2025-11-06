@@ -81,74 +81,56 @@ const description = "Revive nuestros mejores momentos y conciertos";
     <!-- Conciertos -->
     {concerts.map((concert) => (
       <article class="mb-20">
-        {/* Banner con imagen de fondo y título superpuesto */}
-        {concert.data.thumbnail ? (
-          <div class="relative rounded-xl overflow-hidden shadow-2xl mb-8">
-            <Picture 
-              src={concert.data.thumbnail}
-              alt={concert.data.title}
-              attributes={{
-                img: {
-                  class: "w-full h-64 md:h-80 object-cover"
-                }
-              }}
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-              <div class="flex flex-wrap items-center gap-3 mb-3">
-                <div class="inline-block bg-white/90 backdrop-blur-sm text-gray-900 px-4 py-1 rounded-full text-sm font-semibold">
-                  {formatDate(concert.data.date)}
-                </div>
-                {concert.data.event_type && (
-                  <span class="text-sm text-white/90 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">
-                    {concert.data.event_type}
-                  </span>
-                )}
-                {concert.data.featured && (
-                  <div class="inline-block bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                    ⭐ Destacado
-                  </div>
-                )}
+        {/* Banner hero con imagen de fondo y contenido superpuesto */}
+        <div class="relative rounded-xl overflow-hidden shadow-2xl mb-8 min-h-[320px] md:min-h-[400px]">
+          {concert.data.thumbnail && (
+            <>
+              <div class="absolute inset-0">
+                <Picture 
+                  src={concert.data.thumbnail}
+                  alt={concert.data.title}
+                  attributes={{
+                    img: {
+                      class: "w-full h-full object-cover"
+                    }
+                  }}
+                />
               </div>
-              <h2 class="text-3xl md:text-5xl font-bold text-white drop-shadow-lg">
-                {concert.data.title}
-              </h2>
-            </div>
-          </div>
-        ) : (
-          <div class="mb-8">
-            <div class="flex flex-wrap items-center gap-3 mb-3">
-              <div class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-1 rounded-full text-sm font-semibold">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20"></div>
+            </>
+          )}
+          
+          <div class="relative z-10 flex flex-col justify-end h-full min-h-[320px] md:min-h-[400px] p-6 md:p-8">
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+              <div class="inline-block bg-white/95 backdrop-blur-sm text-gray-900 px-4 py-1.5 rounded-full text-sm font-semibold shadow-lg">
                 {formatDate(concert.data.date)}
               </div>
               {concert.data.event_type && (
-                <span class="text-sm text-gray-600 dark:text-gray-400">
+                <span class="text-sm text-white/95 bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg font-medium">
                   {concert.data.event_type}
                 </span>
               )}
               {concert.data.featured && (
-                <div class="inline-block bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                  Destacado
+                <div class="inline-block bg-yellow-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">
+                  ⭐ Destacado
                 </div>
               )}
             </div>
-            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+            <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4" style="text-shadow: 0 4px 12px rgba(0,0,0,0.5)">
               {concert.data.title}
             </h2>
+            {concert.data.location && (
+              <p class="text-lg md:text-xl text-white/90 mb-2 flex items-center gap-2" style="text-shadow: 0 2px 8px rgba(0,0,0,0.5)">
+                <span>📍</span>
+                <span>{concert.data.location}</span>
+              </p>
+            )}
+            {concert.data.description && (
+              <p class="text-base md:text-lg text-white/85 max-w-3xl" style="text-shadow: 0 2px 8px rgba(0,0,0,0.5)">
+                {concert.data.description}
+              </p>
+            )}
           </div>
-        )}
-        
-        <div class="mb-8">
-          {concert.data.location && (
-            <p class="text-lg text-gray-600 dark:text-gray-400 mb-2">
-              📍 {concert.data.location}
-            </p>
-          )}
-          {concert.data.description && (
-            <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl">
-              {concert.data.description}
-            </p>
-          )}
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
