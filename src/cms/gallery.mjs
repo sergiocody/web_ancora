@@ -1,0 +1,65 @@
+import { t } from "@util/translate";
+
+export const gallery = {
+  label: "Galería",
+  name: "gallery",
+  icon: "portfolio",
+  folder: "src/content/gallery",
+  create: true,
+  delete: true,
+  slug: "{{slug}}",
+  extension: "mdx",
+  format: "frontmatter",
+  identifier_field: "title",
+  fields: [
+    {
+      label: t("title"),
+      name: "title",
+      widget: "string",
+      required: true,
+    },
+    {
+      label: "Fecha",
+      name: "date",
+      widget: "datetime",
+      required: true,
+      date_format: "DD-MM-YYYY",
+      time_format: false,
+    },
+    {
+      label: "Descripción",
+      name: "description",
+      widget: "string",
+      required: false,
+    },
+    {
+      label: "URL del video (YouTube)",
+      name: "video_url",
+      widget: "string",
+      required: true,
+      hint: "URL completa de YouTube, ej: https://www.youtube.com/watch?v=xxxxx",
+    },
+    {
+      label: "Miniatura",
+      name: "thumbnail",
+      widget: "image",
+      required: false,
+      hint: "Opcional: Se usará la miniatura de YouTube si no se proporciona",
+    },
+    {
+      label: "Destacado",
+      name: "featured",
+      widget: "boolean",
+      default: false,
+      required: false,
+    },
+    {
+      label: t("tags"),
+      name: "tag",
+      widget: "select",
+      multiple: true,
+      options: ["Concierto", "Ensayo", "Evento especial"],
+      required: false,
+    },
+  ],
+};

@@ -1,10 +1,9 @@
 ---
 /* STATIC CMS ADMIN PAGE */
-import { menu, page, settings, post, project } from "@cms/index.mjs";
+import { page, settings, post, project, gallery } from "@cms/index.mjs";
 import logo from "@icons/logo.svg";
 import newsIcon from "@icons/news.svg";
 import pageIcon from "@icons/page.svg";
-import menuIcon from "@icons/menu.svg";
 import settingsIcon from "@icons/settings.svg";
 import portfolioIcon from "@icons/portfolio.svg";
 const staticCmsVersion = "3.4.5";
@@ -36,7 +35,7 @@ const config = {
     max_file_size: 2012000,
     folder_support: true,
   },
-  collections: [page, post, project, menu, settings],
+  collections: [page, post, project, gallery, settings],
 };
 ---
 
@@ -109,7 +108,6 @@ const config = {
         logo,
         newsIcon,
         pageIcon,
-        menuIcon,
         settingsIcon,
         portfolioIcon,
       }}
@@ -119,7 +117,6 @@ const config = {
       CMS.registerIcon("house", () => h("img", { src: logo.src }));
       CMS.registerIcon("news", () => h("img", { src: newsIcon.src }));
       CMS.registerIcon("page", () => h("img", { src: pageIcon.src }));
-      CMS.registerIcon("menu", () => h("img", { src: menuIcon.src }));
       CMS.registerIcon("settings", () => h("img", { src: settingsIcon.src }));
       CMS.registerIcon("portfolio", () => h("img", { src: portfolioIcon.src }));
     </script>

@@ -4,5 +4,6 @@ import { post } from "./post.mjs";
 import { menu } from "./menu.mjs";
 import { project } from "./project.mjs";
 import { product } from "./product.mjs";
+import { gallery } from "./gallery.mjs";
 
-export { settings, menu, page, post, project, product };
+export { settings, page, post, project, gallery };

@@ -642,4 +642,20 @@ const config = defineCollection({
 	})
 })
 
-export const collections = { eventos, page, menu, miembros, product, config }
+const gallery = defineCollection({
+	type: 'content',
+	schema: z.object({
+		title: z.string(),
+		date: z
+			.string()
+			.or(z.date())
+			.transform((val) => new Date(val)),
+		description: z.string().optional(),
+		video_url: z.string(),
+		thumbnail: z.string().optional(),
+		featured: z.boolean().default(false),
+		tag: z.array(z.string()).optional(),
+	})
+})
+
+export const collections = { eventos, page, menu, miembros, product, config, gallery }
