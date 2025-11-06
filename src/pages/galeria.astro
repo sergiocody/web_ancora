@@ -80,19 +80,19 @@ const description = "Revive nuestros mejores momentos y conciertos";
     <!-- Conciertos -->
     {concerts.map((concert) => (
       <article class="mb-20">
-        {/* Imagen del concierto si existe */}
-        {concert.data.thumbnail && (
-          <div class="mb-8 rounded-lg overflow-hidden">
-            <img 
-              src={concert.data.thumbnail}
-              alt={concert.data.title}
-              class="w-full h-64 md:h-96 object-cover"
-              loading="lazy"
-            />
-          </div>
-        )}
-
         <div class="mb-8">
+          {/* Imagen destacada del concierto si existe */}
+          {concert.data.thumbnail && (
+            <div class="mb-6 rounded-xl overflow-hidden shadow-lg">
+              <img 
+                src={concert.data.thumbnail}
+                alt={concert.data.title}
+                class="w-full h-48 md:h-64 object-cover"
+                loading="lazy"
+              />
+            </div>
+          )}
+          
           <div class="flex flex-wrap items-center gap-3 mb-3">
             <div class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-1 rounded-full text-sm font-semibold">
               {formatDate(concert.data.date)}
