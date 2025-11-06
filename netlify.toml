@@ -1,6 +1,7 @@
 [build]
   publish = "dist"
   edge_functions = "edge-functions"
+  command = "npm run build"
 
 # Variables de entorno por defecto (se pueden sobrescribir en Netlify UI)
 [build.environment]
@@ -8,6 +9,10 @@
   CURRENCY = "EUR"
   UNITS = "metric"
   NODE_VERSION = "18"
+
+# Auto-publicar cuando hay cambios en el repositorio
+[build.processing]
+  skip_processing = false
 
 [[edge_functions]]
   function = "subscribe-mailchimp"
