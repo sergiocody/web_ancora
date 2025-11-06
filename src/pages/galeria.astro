@@ -81,41 +81,64 @@ const description = "Revive nuestros mejores momentos y conciertos";
     <!-- Conciertos -->
     {concerts.map((concert) => (
       <article class="mb-20">
-        <div class="mb-8">
-          <div class="flex flex-wrap items-center gap-3 mb-3">
-            <div class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-1 rounded-full text-sm font-semibold">
-              {formatDate(concert.data.date)}
-            </div>
-            {concert.data.event_type && (
-              <span class="text-sm text-gray-600 dark:text-gray-400">
-                {concert.data.event_type}
-              </span>
-            )}
-            {concert.data.featured && (
-              <div class="inline-block bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                Destacado
+        {/* Banner con imagen de fondo y título superpuesto */}
+        {concert.data.thumbnail ? (
+          <div class="relative rounded-xl overflow-hidden shadow-2xl mb-8">
+            <Picture 
+              src={concert.data.thumbnail}
+              alt={concert.data.title}
+              attributes={{
+                img: {
+                  class: "w-full h-64 md:h-80 object-cover"
+                }
+              }}
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+              <div class="flex flex-wrap items-center gap-3 mb-3">
+                <div class="inline-block bg-white/90 backdrop-blur-sm text-gray-900 px-4 py-1 rounded-full text-sm font-semibold">
+                  {formatDate(concert.data.date)}
+                </div>
+                {concert.data.event_type && (
+                  <span class="text-sm text-white/90 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">
+                    {concert.data.event_type}
+                  </span>
+                )}
+                {concert.data.featured && (
+                  <div class="inline-block bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                    ⭐ Destacado
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-          <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-            {concert.data.title}
-          </h2>
-          
-          {/* Imagen destacada del concierto después del título */}
-          {concert.data.thumbnail && (
-            <div class="mb-6 rounded-xl overflow-hidden shadow-lg">
-              <Picture 
-                src={concert.data.thumbnail}
-                alt={concert.data.title}
-                attributes={{
-                  img: {
-                    class: "w-full h-48 md:h-64 object-cover"
-                  }
-                }}
-              />
+              <h2 class="text-3xl md:text-5xl font-bold text-white drop-shadow-lg">
+                {concert.data.title}
+              </h2>
             </div>
-          )}
-          
+          </div>
+        ) : (
+          <div class="mb-8">
+            <div class="flex flex-wrap items-center gap-3 mb-3">
+              <div class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-1 rounded-full text-sm font-semibold">
+                {formatDate(concert.data.date)}
+              </div>
+              {concert.data.event_type && (
+                <span class="text-sm text-gray-600 dark:text-gray-400">
+                  {concert.data.event_type}
+                </span>
+              )}
+              {concert.data.featured && (
+                <div class="inline-block bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                  Destacado
+                </div>
+              )}
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+              {concert.data.title}
+            </h2>
+          </div>
+        )}
+        
+        <div class="mb-8">
           {concert.data.location && (
             <p class="text-lg text-gray-600 dark:text-gray-400 mb-2">
               📍 {concert.data.location}
