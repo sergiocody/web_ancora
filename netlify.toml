@@ -2,10 +2,16 @@
   publish = "dist"
   edge_functions = "edge-functions"
 
+# Variables de entorno por defecto (se pueden sobrescribir en Netlify UI)
+[build.environment]
+  WEBSITE_LANGUAGE = "es"
+  CURRENCY = "EUR"
+  UNITS = "metric"
+  NODE_VERSION = "18"
+
 [[edge_functions]]
   function = "subscribe-mailchimp"
   path = "/api/subscribe-mailchimp"
-
 
 [[edge_functions]]
   function = "contact-slack"
@@ -18,5 +24,9 @@
 [[edge_functions]]
   function = "contact-postmark"
   path = "/api/contact-postmark"
+
+[[edge_functions]]
+  function = "contact-brevo"
+  path = "/api/contact-brevo"
 
 
