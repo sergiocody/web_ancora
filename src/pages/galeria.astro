@@ -1,0 +1,157 @@
+---
+/* GALERÍA DE VIDEOS */
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { Icon } from "astro-icon/components";
+
+// Obtener todos los videos ordenados por fecha (más recientes primero)
+const videos = (await getCollection("gallery")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// Agrupar videos por año
+const videosByYear = videos.reduce((acc, video) => {
+  const year = video.data.date.getFullYear();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(video);
+  return acc;
+}, {} as Record<number, typeof videos>);
+
+const years = Object.keys(videosByYear).sort((a, b) => Number(b) - Number(a));
+
+// Función para extraer el ID de YouTube
+function getYouTubeId(url: string) {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+}
+
+const title = "Galería de Videos";
+const description = "Revive nuestros mejores momentos y conciertos";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="container-xl py-12">
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+        {title}
+      </h1>
+      <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed font-light max-w-3xl mx-auto">
+        Cada actuación es un momento único donde la música y la emoción se unen para crear 
+        <span class="font-semibold text-primary">recuerdos inolvidables</span>
+      </p>
+    </div>
+
+    <!-- Videos por año -->
+    {years.map((year) => {
+      const yearVideos = videosByYear[Number(year)];
+      return (
+        <section class="mb-20">
+          <div class="mb-8">
+            <div class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-1 rounded-full text-sm font-semibold mb-3">
+              {year}
+            </div>
+          </div>
+          
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {yearVideos.map((video) => {
+              const videoId = getYouTubeId(video.data.video_url);
+              const thumbnail = video.data.thumbnail 
+                ? video.data.thumbnail 
+                : `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+              
+              return (
+                <article class="video-card group">
+                  <div class="relative aspect-video rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-gray-900">
+                    <img 
+                      src={thumbnail}
+                      alt={video.data.title}
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                      <a 
+                        href={video.data.video_url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300 shadow-xl"
+                        aria-label={`Ver ${video.data.title}`}
+                      >
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                        </svg>
+                      </a>
+                    </div>
+                    {video.data.featured && (
+                      <div class="absolute top-3 right-3 bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                        Destacado
+                      </div>
+                    )}
+                  </div>
+                  <div class="mt-3">
+                    <h3 class="font-semibold text-gray-900 dark:text-white text-lg">
+                      {video.data.title}
+                    </h3>
+                    {video.data.description && (
+                      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        {video.data.description}
+                      </p>
+                    )}
+                    {video.data.tag && video.data.tag.length > 0 && (
+                      <div class="flex gap-2 mt-2 flex-wrap">
+                        {video.data.tag.map((tag) => (
+                          <span class="text-xs bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      );
+    })}
+
+    {videos.length === 0 && (
+      <div class="text-center py-20">
+        <Icon name="portfolio" class="w-20 h-20 mx-auto mb-4 text-gray-400" />
+        <p class="text-xl text-gray-600 dark:text-gray-400">
+          Todavía no hay videos en la galería.
+        </p>
+        <p class="text-gray-500 dark:text-gray-500 mt-2">
+          Agrega videos desde el CMS para que aparezcan aquí.
+        </p>
+      </div>
+    )}
+
+    <!-- CTA -->
+    <section class="text-center bg-primary text-white rounded-lg p-12 mt-20">
+      <h2 class="text-3xl font-bold mb-4">¿Quieres ver más?</h2>
+      <p class="text-xl mb-6">
+        Síguenos en nuestras redes sociales para más fotos y videos
+      </p>
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a
+          href="https://www.instagram.com/ancoragrupovocal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-lg font-bold hover:bg-neutral-100 transition"
+        >
+          <Icon name="instagram" class="w-5 h-5" />
+          Instagram
+        </a>
+        <a
+          href="#"
+          class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-lg font-bold hover:bg-neutral-100 transition"
+        >
+          <Icon name="facebook" class="w-5 h-5" />
+          Facebook
+        </a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
