@@ -23,7 +23,7 @@ export const gallery = {
       name: "date",
       widget: "datetime",
       required: true,
-      date_format: "DD-MM-YYYY",
+      date_format: "dd-MM-yyyy",
       time_format: false,
     },
     {
