@@ -2,9 +2,9 @@ import { toolbarButtons, style, buttons, blocks } from "./common.mjs";
 import { t } from "@util/translate";
 export const post = {
   name: "posts",
-  identifier_field: "name",
-  folder: "src/content/blog",
-  label: t("blog"),
+  identifier_field: "title",
+  folder: "src/content/eventos",
+  label: t("eventos"),
   format: "frontmatter",
   extension: "mdx",
   icon: "news",
@@ -22,10 +22,10 @@ export const post = {
       collection: "config",
       max: 5,
       required: false,
-      file: "blog",
-      search_fields: ["blog_tags.*.name"],
-      display_fields: ["blog_tags.*.name"],
-      value_field: "blog_tags.*.name",
+      file: "eventos",
+  search_fields: ["blog_tags.*.name"],
+  display_fields: ["blog_tags.*.name"],
+  value_field: "blog_tags.*.name",
     },
     {
       label: t("title"),

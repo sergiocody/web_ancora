@@ -44,9 +44,9 @@ export const settings = {
     },
 
     {
-      name: "blog",
-      label: t("blog_settings"),
-      file: "src/content/config/blog.mdx",
+      name: "eventos",
+      label: t("eventos_settings"),
+      file: "src/content/config/eventos.mdx",
 
       fields: [
         { name: "title", label: t("title"), widget: "string" },
@@ -126,9 +126,9 @@ export const settings = {
       ],
     },
     {
-      name: "project",
+      name: "miembros",
       label: t("portfolio_settings"),
-      file: "src/content/config/project.mdx",
+      file: "src/content/config/miembros.mdx",
 
       fields: [
         { name: "title", label: t("title"), widget: "string" },

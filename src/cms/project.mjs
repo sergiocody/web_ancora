@@ -2,8 +2,8 @@ import { toolbarButtons, blocks, style, buttons } from "./common.mjs";
 import { t } from "@util/translate";
 export const project = {
   name: "project",
-  identifier_field: "name",
-  folder: "src/content/project",
+  identifier_field: "title",
+  folder: "src/content/miembros",
   label: t("project"),
   format: "frontmatter",
   extension: "mdx",
@@ -22,7 +22,7 @@ export const project = {
       collection: "config",
       max: 5,
       required: false,
-      file: "project",
+      file: "miembros",
       search_fields: ["project_tags.*.name"],
       display_fields: ["project_tags.*.name"],
       value_field: "project_tags.*.name",

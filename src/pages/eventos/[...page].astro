@@ -20,8 +20,10 @@ const { data } = await getEntry("config", "eventos");
 const posts = (await getCollection("eventos")).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
 );
-/* Usar el orden de blog_tags del config */
-const filters = data.blog_tags ? data.blog_tags.map((t) => t.name) : [];
+
+/* Filtros automáticos por fecha: Próximos y Pasados */
+const now = new Date();
+const filters = ["Próximos", "Pasados"];
 ---
 
 <PageLayoutArchive {page} {filters} {data} {base_url} />

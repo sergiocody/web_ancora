@@ -12,6 +12,8 @@
   "blocks": "Page Builder Blocks",
   "blog": "Blog",
   "blog_settings": "Blog Settings",
+  "eventos": "Events",
+  "eventos_settings": "Events Settings",
   "body": "Body",
   "button": "Button",
   "buttons": "Buttons",
@@ -35,6 +37,13 @@
   "eggs": "eggs",
   "email": "Email",
   "enlarge_image": "Enlarge Image",
+  "topic": "Topic",
+  "phone": "Phone",
+  "message": "Message",
+  "submit": "Submit",
+  "select_topic": "Select a topic",
+  "contact_thanks": "Thank you for your message! We will get back to you soon.",
+  "contact_error": "There was an error sending your message. Please try again.",
   "featured_image": "Featured Image",
   "fish": "fish",
   "footer_menus": "Footer Menus",
@@ -154,7 +163,5 @@
   "weight": "Weight",
   "weight_in_grams": "Weight in grams",
   "width": "Width",
-  "width_in_cm": "Width in cm",
-  "contact_thanks": "Thank you for contacting us. We will get back to you as soon as possible.",
-  "contact_error": "We could not send your message. Please try again."
+  "width_in_cm": "Width in cm"
 }

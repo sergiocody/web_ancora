@@ -3,7 +3,7 @@ import { toolbarButtons, blocks, buttons, style } from "./common.mjs";
 import { t } from "@util/translate";
 export const page = {
   name: "page",
-  identifier_field: "name",
+  identifier_field: "title",
   folder: "src/content/page",
   label: "Pages",
   format: "frontmatter",
@@ -19,13 +19,13 @@ export const page = {
       label: t("title"),
       name: "title",
       widget: "string",
-      pattern: [".{5,}", "Must have at least 20 characters"],
+      required: false,
     },
     {
       label: t("description_seo"),
       name: "description",
       widget: "text",
-      pattern: [".{10,}", "Must have at least 10 characters"],
+      required: false,
     },
 
     {
@@ -34,7 +34,19 @@ export const page = {
       widget: "text",
       required: false,
     },
-
+    {
+      label: "Publish Date",
+      name: "pubDate",
+      widget: "datetime",
+      required: false,
+    },
+    {
+      label: "Layout Hidden",
+      name: "layout-hidden",
+      widget: "boolean",
+      required: false,
+      default: false,
+    },
     {
       label: t("body"),
       name: "body",
@@ -162,7 +174,7 @@ export const page = {
       label: t("featured_image"),
       name: "thumbnail",
       widget: "image",
-      required: true,
+      required: false,
     },
     {
       label: t("og_image"),

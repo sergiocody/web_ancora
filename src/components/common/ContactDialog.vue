@@ -25,6 +25,7 @@
                 class="input-group z-20 w-full"
                 v-if="contact.topics.length > 1"
               >
+                <label class="field-label">{{ t("topic") }} *</label>
                 <Popper
                   placement="bottom-start"
                   offsetDistance="1"
@@ -36,7 +37,7 @@
                     @click="showPopper = !showPopper"
                     class="select surface-overlay w-full text-left"
                   >
-                    {{ !!topic ? topic : "Select" }}
+                    {{ !!topic ? topic : t("select_topic") }}
                   </button>
 
                   <template #content>
@@ -62,67 +63,46 @@
                     </ul>
                   </template>
                 </Popper>
-
-                <label
-                  class="peer-placeholder-shown:left-4 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-9 peer-focus:scale-75 peer-focus:text-primary"
-                  >{{ t("topic") }} *</label
-                >
               </div>
               <div class="input-group">
+                <label class="field-label">{{ t("name") }} *</label>
                 <input
                   type="text"
                   name="name"
-                  placeholder=" "
-                  class="surface-overlay peer"
+                  class="surface-overlay"
                   v-model="form.name"
                 />
-                <label
-                  class="peer-placeholder-shown:left-4 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-9 peer-focus:scale-75 peer-focus:text-primary"
-                  >{{ t("name") }} *</label
-                >
               </div>
 
               <div class="input-group">
+                <label class="field-label">{{ t("email") }} *</label>
                 <input
                   type="email"
                   name="email"
-                  placeholder=" "
-                  class="surface-overlay peer"
+                  class="surface-overlay"
                   v-model="form.email"
                 />
-                <label
-                  class="peer-placeholder-shown:left-4 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-9 peer-focus:scale-75 peer-focus:text-primary"
-                  >{{ t("email") }} *</label
-                >
               </div>
               <div class="input-group">
+                <label class="field-label">{{ t("phone") }}</label>
                 <input
                   type="text"
                   name="phone"
-                  placeholder=" "
-                  class="surface-overlay peer"
+                  class="surface-overlay"
                   v-model="form.phone"
                 />
-                <label
-                  class="peer-placeholder-shown:left-4 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-9 peer-focus:scale-75 peer-focus:text-primary"
-                  >{{ t("phone") }}</label
-                >
               </div>
               <div class="input-group">
+                <label class="field-label">{{ t("message") }} *</label>
                 <textarea
-                  class="surface-overlay peer"
+                  class="surface-overlay"
                   name="message"
                   id=""
-                  placeholder=" "
                   cols="30"
                   rows="2"
                   ref="textarea"
                   v-model="input"
                 ></textarea>
-                <label
-                  class="peer-placeholder-shown:left-4 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-9 peer-focus:scale-75 peer-focus:text-primary"
-                  >Message *</label
-                >
               </div>
               <div
                 class="pointer-events-none right-5 mb-14 flex translate-y-10 justify-end md:sticky md:bottom-0"
@@ -336,14 +316,16 @@ watch(
 }
 
 .input-group {
-  @apply relative isolate;
+  @apply relative isolate flex flex-col gap-2;
   input,
   textarea,
   .select {
-    @apply block w-full rounded-2xl px-3 py-2.5  focus:outline-primary;
+    @apply block w-full rounded-2xl px-3 py-2.5 focus:outline-primary;
   }
-  label {
-    @apply pointer-events-none absolute left-0 top-3 z-10 origin-[0] -translate-y-9  scale-75 transform text-sm  duration-300;
+  .field-label {
+    @apply text-sm font-medium;
+    color: currentColor;
+    opacity: 0.8;
   }
 }
 </style>

@@ -1,0 +1,430 @@
+---
+// src/pages/videos.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Picture } from "astro-imagetools/components";
+import Button from '@components/navigation/Button.astro';
+
+const pageTitle = "Galería de Videos";
+const pageDescription = "Revive nuestros mejores momentos y conciertos";
+
+// Datos de los conciertos con sus videos
+const conciertos = [
+  {
+    titulo: "Concierto de Navidad 2024",
+    fecha: "15 de Diciembre, 2024",
+    descripcion: "Nuestro tradicional concierto navideño en el Auditorio Municipal. Una velada mágica con villancicos tradicionales, música clásica y sorpresas especiales.",
+    videos: [
+      {
+        id: "dQw4w9WgXcQ", // Reemplazar con ID real de YouTube
+        titulo: "Noche de Paz - Concierto Navidad"
+      },
+      {
+        id: "dQw4w9WgXcQ", // Reemplazar con ID real
+        titulo: "Carol of the Bells"
+      },
+      {
+        id: "dQw4w9WgXcQ", // Reemplazar con ID real
+        titulo: "Ave María - Schubert"
+      }
+    ]
+  },
+  {
+    titulo: "Gala Benéfica 2024",
+    fecha: "22 de Noviembre, 2024",
+    descripcion: "Concierto solidario a beneficio de la Asociación contra el Cáncer. Más de 800 asistentes y una recaudación histórica.",
+    videos: [
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "Hallelujah - Leonard Cohen"
+      },
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "You Raise Me Up"
+      }
+    ]
+  },
+  {
+    titulo: "Concierto de Primavera 2024",
+    fecha: "20 de Abril, 2024",
+    descripcion: "Celebramos la llegada de la primavera con un repertorio alegre y colorido, mezclando clásicos con arreglos modernos.",
+    videos: [
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "La Primavera - Vivaldi (adaptación coral)"
+      },
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "What a Wonderful World"
+      },
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "Popurrí de música española"
+      }
+    ]
+  },
+  {
+    titulo: "Gira Internacional - Italia 2023",
+    fecha: "Septiembre 2023",
+    descripcion: "Resumen de nuestra inolvidable gira por Italia, con actuaciones en Roma, Florencia y Venecia. Una experiencia que quedará grabada en nuestros corazones.",
+    videos: [
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "Concierto en la Basílica de San Pedro - Roma"
+      },
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "Actuación en Florencia"
+      },
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "Serenata en Venecia"
+      },
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "Behind the scenes - Gira Italia"
+      }
+    ]
+  },
+  {
+    titulo: "Festival Coral Internacional 2023",
+    fecha: "15 de Junio, 2023",
+    descripcion: "Primer premio en el Festival Internacional de Música Coral de Valencia. Nuestra actuación que nos valió el reconocimiento internacional.",
+    videos: [
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "O Magnum Mysterium - Morten Lauridsen"
+      },
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "Lux Aurumque - Eric Whitacre"
+      }
+    ]
+  },
+  {
+    titulo: "Concierto 25 Aniversario",
+    fecha: "10 de Octubre, 2023",
+    descripcion: "Celebración de nuestros 25 años de historia. Un emotivo recorrido por los momentos más memorables de la coral con invitados especiales.",
+    videos: [
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "Momentos especiales - 25 años"
+      },
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "Popurrí aniversario"
+      },
+      {
+        id: "dQw4w9WgXcQ",
+        titulo: "Discurso y homenajes"
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  
+  <!-- Hero Section -->
+  <div class="hero relative overflow-hidden nebulix-parallax surface-dark" id="header">
+    <div class="media parallax h-full w-full">
+      <Picture
+        attributes={{
+          picture: {
+            class: "sm:h-screen",
+            style: "opacity: 0.7",
+          },
+        }}
+        src="/images/piano.jpg"
+        width={1920}
+        height={1080}
+        ar={16 / 10}
+        alt={pageTitle}
+        breakpoints={[1000, 1280, 1440, 1536, 1920]}
+        sizes="100vw"
+        loading="eager"
+        layout="fill"
+        position="entropy"
+        artDirectives={[
+          {
+            media: "(max-width: 500px)",
+            ar: 0.6,
+            src: "/images/piano.jpg",
+            breakpoints: [320, 360, 390, 412, 500, 601, 768, 1024, 1200],
+          },
+          {
+            media: "(max-width: 1000px)",
+            ar: 1,
+            src: "/images/piano.jpg",
+            breakpoints: [500, 601, 768, 820, 962, 1280, 1440, 1536, 1920],
+          },
+        ]}
+      />
+    </div>
+
+    <div class="absolute inset-0 z-10 grid place-items-center bg-dark bg-opacity-20">
+      <div class="container-xl py-8">
+        <div class="max-w-3xl">
+          <div class="mb-4 flex justify-center sm:justify-start">
+            <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+            </svg>
+          </div>
+          <h1 class="title">{pageTitle}</h1>
+          <div class="subtitle balance py2">Revive nuestros mejores momentos</div>
+          
+          <div class="flex flex-wrap gap-4 py-8">
+            <Button 
+              label="Ver eventos" 
+              href="/eventos" 
+              color="surface-base"
+              icon_only={false}
+            />
+            <Button 
+              label="Conocer al equipo" 
+              href="/miembros" 
+              color="light"
+              icon_only={false}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Introducción -->
+  <section class="py-16 px-4 max-w-5xl mx-auto text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+      Disfruta de nuestros conciertos más memorables
+    </h2>
+    <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed font-light">
+      Cada actuación es un momento único donde la música y la emoción se unen para crear 
+      <span class="font-semibold text-primary">recuerdos inolvidables</span>
+    </p>
+  </section>
+
+  <!-- Grid de Conciertos -->
+  <section class="pb-20 px-4">
+    <div class="max-w-7xl mx-auto space-y-20">
+      
+      {conciertos.map((concierto, index) => (
+        <article class="concierto-item" id={`concierto-${index}`}>
+          
+          <!-- Header del Concierto -->
+          <div class="mb-8 text-center md:text-left">
+            <div class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-1 rounded-full text-sm font-semibold mb-3">
+              {concierto.fecha}
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white">
+              {concierto.titulo}
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl">
+              {concierto.descripcion}
+            </p>
+          </div>
+
+          <!-- Grid de Videos -->
+          <div class={`grid gap-6 ${
+            concierto.videos.length === 1 ? 'md:grid-cols-1 max-w-4xl mx-auto' :
+            concierto.videos.length === 2 ? 'md:grid-cols-2' :
+            concierto.videos.length === 3 ? 'md:grid-cols-3' :
+            'md:grid-cols-2 lg:grid-cols-2'
+          }`}>
+            
+            {concierto.videos.map((video) => (
+              <div class="video-card group">
+                <div class="relative aspect-video rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-gray-900">
+                  <!-- Thumbnail de YouTube -->
+                  <img 
+                    src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
+                    alt={video.titulo}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  
+                  <!-- Overlay con botón de play -->
+                  <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                    <button 
+                      class="play-button bg-red-600 hover:bg-red-700 text-white rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300 shadow-xl"
+                      data-video-id={video.id}
+                      aria-label={`Reproducir ${video.titulo}`}
+                    >
+                      <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <!-- Duración (opcional) -->
+                  <div class="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">
+                    🎵 Video
+                  </div>
+                </div>
+                
+                <!-- Título del video -->
+                <h3 class="mt-3 font-semibold text-gray-900 dark:text-white text-center md:text-left">
+                  {video.titulo}
+                </h3>
+              </div>
+            ))}
+          </div>
+
+          <!-- Separador -->
+          {index < conciertos.length - 1 && (
+            <div class="mt-16 border-t border-gray-200 dark:border-gray-700"></div>
+          )}
+        </article>
+      ))}
+
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-16 px-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-center">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">¿Quieres vernos en vivo?</h2>
+      <p class="text-lg md:text-xl mb-8">
+        Consulta nuestros próximos conciertos y no te pierdas la oportunidad de disfrutar 
+        de nuestra música en directo
+      </p>
+      <a 
+        href="/eventos" 
+        class="inline-block bg-white text-purple-600 font-bold py-3 px-8 rounded-lg text-lg hover:bg-gray-100 transition shadow-lg"
+      >
+        Ver Próximos Eventos
+      </a>
+    </div>
+  </section>
+
+  <!-- Modal para reproducir videos -->
+  <div id="video-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center p-4">
+    <button 
+      id="close-modal" 
+      class="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
+      aria-label="Cerrar video"
+    >
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="w-full max-w-6xl aspect-video">
+      <iframe 
+        id="youtube-player"
+        width="100%" 
+        height="100%" 
+        src="" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen
+        class="rounded-lg"
+      ></iframe>
+    </div>
+  </div>
+
+</BaseLayout>
+
+<script>
+  // Funcionalidad del modal de video
+  const modal = document.getElementById('video-modal');
+  const player = document.getElementById('youtube-player') as HTMLIFrameElement;
+  const closeBtn = document.getElementById('close-modal');
+  const playButtons = document.querySelectorAll('.play-button');
+
+  // Abrir modal y reproducir video
+  playButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const videoId = button.getAttribute('data-video-id');
+      if (videoId) {
+        player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        modal?.classList.remove('hidden');
+        modal?.classList.add('flex');
+      }
+    });
+  });
+
+  // Cerrar modal
+  function closeModal() {
+    modal?.classList.add('hidden');
+    modal?.classList.remove('flex');
+    player.src = ''; // Detener el video
+  }
+
+  closeBtn?.addEventListener('click', closeModal);
+  
+  // Cerrar al hacer click fuera del video
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Cerrar con tecla ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeModal();
+    }
+  });
+</script>
+
+<style>
+  .hero {
+    @screen sm {
+      min-height: calc(100svh - 4rem);
+    }
+  }
+  .media {
+    @screen sm {
+      max-height: calc(100svh - 4rem);
+    }
+  }
+
+  .hero-section {
+    position: relative;
+  }
+
+  .concierto-item {
+    scroll-margin-top: 100px;
+  }
+
+  .video-card {
+    transition: transform 0.3s ease;
+  }
+
+  .video-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .play-button {
+    transition: all 0.3s ease;
+  }
+
+  .play-button:hover {
+    box-shadow: 0 0 30px rgba(220, 38, 38, 0.6);
+  }
+
+  #video-modal {
+    backdrop-filter: blur(4px);
+  }
+
+  /* Animaciones */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .concierto-item {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .hero-section h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style>

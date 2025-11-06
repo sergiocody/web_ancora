@@ -1,0 +1,52 @@
+---
+/* EVENTOS FILTRADOS POR FECHA (PRÓXIMOS/PASADOS) */
+import { getEntry } from "astro:content";
+import PageLayoutArchive from "@layouts/PageLayoutArchive.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths({ paginate }) {
+  const allPosts = await getCollection("eventos");
+  const { data } = await getEntry("config", "eventos");
+  const now = new Date();
+
+  // Filtrar eventos próximos (fecha futura o igual a hoy)
+  const proximosPosts = allPosts
+    .filter((post) => post.data.pubDate >= now)
+    .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+
+  // Filtrar eventos pasados (fecha anterior a hoy)
+  const pasadosPosts = allPosts
+    .filter((post) => post.data.pubDate < now)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+  return [
+    ...paginate(proximosPosts, {
+      params: { filter: "proximos" },
+      pageSize: data.per_page,
+      props: { filterName: "Próximos" },
+    }),
+    ...paginate(pasadosPosts, {
+      params: { filter: "pasados" },
+      pageSize: data.per_page,
+      props: { filterName: "Pasados" },
+    }),
+  ];
+}
+
+const base_url = import.meta.env.BLOG_SLUG;
+const { page, filterName } = Astro.props;
+const { data } = await getEntry("config", "eventos");
+
+const filters = ["Próximos", "Pasados"];
+const filter_type = "filtro";
+const filter = filterName;
+---
+
+<PageLayoutArchive
+  {page}
+  {filters}
+  {data}
+  {base_url}
+  {filter}
+  {filter_type}
+/>

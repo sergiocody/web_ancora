@@ -1,6 +1,19 @@
 ---
 const { filters, className, links, active, base_url, type } = Astro.props;
 import { slugify } from "@util/helpers";
+
+// Helper para generar URL correcta según el filtro
+const getFilterUrl = (filter, isActive) => {
+  if (isActive) return `/${base_url}`;
+  
+  // Para filtros de fecha (Próximos/Pasados), usar ruta especial
+  if (filter === "Próximos" || filter === "Pasados") {
+    return `/${base_url}/filtro/${slugify(filter)}`;
+  }
+  
+  // Para otros filtros, usar la ruta normal con tag
+  return `/${base_url}/${type || "tag"}/${slugify(filter)}`;
+};
 ---
 
 <div
@@ -10,9 +23,7 @@ import { slugify } from "@util/helpers";
     !!links &&
       filters.map((filter) => (
         <a
-          href={`/${base_url}${
-            filter === active ? "" : `/${type || "tag"}/${slugify(filter)}`
-          }`}
+          href={getFilterUrl(filter, filter === active)}
           class={`block rounded-md px-2 py-0.5 text-xs uppercase tracking-widest transition-all duration-300 hover:bg-opacity-60 hover:underline
 						${filter == active ? "underline" : ""} `}
         >

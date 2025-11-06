@@ -1,0 +1,276 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Picture } from "astro-imagetools/components";
+import Button from '@components/navigation/Button.astro';
+import { Icon } from "astro-icon/components";
+
+const pageTitle = "Sobre Nosotros";
+const pageDescription = "Conoce nuestra historia y misión";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  
+  <!-- Hero Section -->
+  <div class="hero relative overflow-hidden nebulix-parallax surface-dark" id="header">
+    <div class="media parallax h-full w-full">
+      <Picture
+        attributes={{
+          picture: {
+            class: "sm:h-screen",
+            style: "opacity: 0.7",
+          },
+        }}
+        src="/images/piano.jpg"
+        width={1920}
+        height={1080}
+        ar={16 / 10}
+        alt={pageTitle}
+        breakpoints={[1000, 1280, 1440, 1536, 1920]}
+        sizes="100vw"
+        loading="eager"
+        layout="fill"
+        position="entropy"
+        artDirectives={[
+          {
+            media: "(max-width: 500px)",
+            ar: 0.6,
+            src: "/images/piano.jpg",
+            breakpoints: [320, 360, 390, 412, 500, 601, 768, 1024, 1200],
+          },
+          {
+            media: "(max-width: 1000px)",
+            ar: 1,
+            src: "/images/piano.jpg",
+            breakpoints: [500, 601, 768, 820, 962, 1280, 1440, 1536, 1920],
+          },
+        ]}
+      />
+    </div>
+
+    <div class="absolute inset-0 z-10 grid place-items-center bg-dark bg-opacity-20">
+      <div class="container-xl py-8">
+        <div class="max-w-3xl">
+          <h1 class="title">{pageTitle}</h1>
+          <div class="subtitle balance py2">25 años uniendo voces y corazones</div>
+          
+          <div class="flex flex-wrap gap-4 py-8">
+            <Button 
+              label="Conoce al equipo" 
+              href="/miembros" 
+              color="surface-base"
+              icon_only={false}
+            />
+            <Button 
+              label="Próximos eventos" 
+              href="/eventos" 
+              color="light"
+              icon_only={false}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historia -->
+  <section class="py-16 px-4 max-w-4xl mx-auto">
+    <h2 class="text-4xl font-bold mb-8">Nuestra Historia</h2>
+    <div class="prose prose-lg max-w-none">
+      <p>
+        Fundada en <strong>1998</strong>, la Coral [Tu Nombre] nace del sueño 
+        compartido de un grupo de amigos apasionados por la música coral...
+      </p>
+      
+      <h3>Los Primeros Años (1998-2005)</h3>
+      <p>
+        Comenzamos ensayando en el sótano de la parroquia local...
+      </p>
+      
+      <h3>Consolidación (2005-2015)</h3>
+      <p>
+        En 2005 ganamos nuestro primer premio...
+      </p>
+      
+      <h3>Madurez y Expansión (2015-Hoy)</h3>
+      <p>
+        Hoy somos 40 voces comprometidas...
+      </p>
+    </div>
+  </section>
+
+  <!-- Misión y Valores -->
+  <section class="py-16 px-4 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-4xl font-bold mb-8 text-center">Nuestra Misión</h2>
+      
+      <blockquote class="text-2xl italic text-center mb-12 max-w-3xl mx-auto">
+        "Difundir la música coral en todas sus formas, creando momentos 
+        mágicos que unan a las personas a través del arte."
+      </blockquote>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Valor 1 -->
+        <div class="text-center">
+          <div class="text-5xl mb-4">🎵</div>
+          <h3 class="text-xl font-bold mb-2">Excelencia Musical</h3>
+          <p>Los más altos estándares en cada interpretación</p>
+        </div>
+
+        <!-- Valor 2 -->
+        <div class="text-center">
+          <div class="text-5xl mb-4">❤️</div>
+          <h3 class="text-xl font-bold mb-2">Pasión y Compromiso</h3>
+          <p>Amor profundo por la música coral</p>
+        </div>
+
+        <!-- Valor 3 -->
+        <div class="text-center">
+          <div class="text-5xl mb-4">🤝</div>
+          <h3 class="text-xl font-bold mb-2">Comunidad</h3>
+          <p>Una familia musical que se apoya</p>
+        </div>
+
+        <!-- Valor 4 -->
+        <div class="text-center">
+          <div class="text-5xl mb-4">🌍</div>
+          <h3 class="text-xl font-bold mb-2">Diversidad</h3>
+          <p>Del barroco al pop, pasando por el góspel</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logros -->
+  <section class="py-16 px-4 max-w-6xl mx-auto">
+    <h2 class="text-4xl font-bold mb-12 text-center">Logros y Reconocimientos</h2>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Premios -->
+      <div>
+        <h3 class="text-2xl font-bold mb-4 flex items-center">
+          <span class="text-3xl mr-2">🏆</span> Premios
+        </h3>
+        <ul class="space-y-3">
+          <li><strong>2023</strong> - Primer Premio Festival Internacional</li>
+          <li><strong>2020</strong> - Premio del Público</li>
+          <li><strong>2018</strong> - Mención Especial</li>
+          <li><strong>2015</strong> - Primer Premio Regional</li>
+        </ul>
+      </div>
+
+      <!-- Hitos -->
+      <div>
+        <h3 class="text-2xl font-bold mb-4 flex items-center">
+          <span class="text-3xl mr-2">🎵</span> Hitos
+        </h3>
+        <ul class="space-y-3">
+          <li><strong>2024</strong> - Estreno obra encargada</li>
+          <li><strong>2021</strong> - Primer álbum</li>
+          <li><strong>2019</strong> - Concierto benéfico 1.000+ personas</li>
+          <li><strong>2018</strong> - Gira internacional</li>
+        </ul>
+      </div>
+
+      <!-- Números -->
+      <div>
+        <h3 class="text-2xl font-bold mb-4 flex items-center">
+          <span class="text-3xl mr-2">📊</span> En Números
+        </h3>
+        <ul class="space-y-3">
+          <li><strong>25 años</strong> de trayectoria</li>
+          <li><strong>40 miembros</strong> activos</li>
+          <li><strong>150+</strong> conciertos</li>
+          <li><strong>10 países</strong> visitados</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dirección Musical -->
+  <section class="py-16 px-4 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-4xl font-bold mb-12 text-center">Dirección Musical</h2>
+      
+      <!-- Directora -->
+      <div class="mb-12 grid md:grid-cols-2 gap-8 items-center">
+        <img 
+          src="/images/equipo/maria-directora.jpg" 
+          alt="María García López"
+          class="rounded-lg shadow-xl"
+        />
+        <div>
+          <h3 class="text-2xl font-bold mb-2">María García López</h3>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-4">Directora Musical</p>
+          <p class="mb-4">
+            María lidera nuestra coral desde 2015, llevándonos a nuevos horizontes 
+            musicales y logrando importantes reconocimientos.
+          </p>
+          <p class="italic text-gray-700 dark:text-gray-300">
+            "La música coral es la expresión más pura de colaboración y armonía humana."
+          </p>
+        </div>
+      </div>
+
+      <!-- Pianista -->
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="md:order-2">
+          <img 
+            src="/images/equipo/juan-pianista.jpg" 
+            alt="Juan Pérez Martín"
+            class="rounded-lg shadow-xl"
+          />
+        </div>
+        <div class="md:order-1">
+          <h3 class="text-2xl font-bold mb-2">Juan Pérez Martín</h3>
+          <p class="text-lg text-gray-600 dark:text-gray-400 mb-4">Pianista Acompañante</p>
+          <p>
+            Juan nos acompaña desde 2018, aportando su sensibilidad musical 
+            y su profundo conocimiento del repertorio coral.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-16 px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-4xl font-bold mb-6">¿Te Apasiona Cantar?</h2>
+      <p class="text-xl mb-8">
+        Únete a nuestra familia y descubre el poder de la música coral
+      </p>
+      <a 
+        href="/unete" 
+        class="inline-block bg-white text-blue-600 font-bold py-3 px-8 rounded-lg text-lg hover:bg-gray-100 transition"
+      >
+        Únete a Nosotros
+      </a>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .hero {
+    @screen sm {
+      min-height: calc(100svh - 4rem);
+    }
+  }
+  .media {
+    @screen sm {
+      max-height: calc(100svh - 4rem);
+    }
+  }
+
+  .prose h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .prose p {
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+</style>
