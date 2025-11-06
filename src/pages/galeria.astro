@@ -5,15 +5,50 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 
 // Obtener todos los conciertos ordenados por fecha (más recientes primero)
-const concerts = (await getCollection("gallery")).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+// Tipado manual para evitar errores TS si los tipos generados aún no sincronizan
+interface ConcertVideo { title: string; video_url: string; description?: string }
+interface ConcertData {
+  title: string;
+  date: Date;
+  description?: string;
+  thumbnail?: string;
+  location?: string;
+  event_type?: string;
+  featured?: boolean;
+  videos: ConcertVideo[];
+}
+interface ConcertEntry { data: ConcertData; [key: string]: any }
+
+// Cast "gallery" as any temporal hasta que los tipos se sincronicen
+const concerts = (await getCollection("gallery" as any) as unknown as ConcertEntry[]).sort(
+  (a, b) => a.data.date && b.data.date ? b.data.date.valueOf() - a.data.date.valueOf() : 0
 );
 
-// Función para extraer el ID de YouTube
+// Función robusta para extraer el ID de YouTube (soporta distintos formatos: watch, youtu.be, embed, shorts)
 function getYouTubeId(url: string) {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  return match && match[2].length === 11 ? match[2] : null;
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    // youtu.be/ID
+    if (u.hostname === 'youtu.be' && u.pathname.length > 1) {
+      return u.pathname.slice(1);
+    }
+    // ?v=ID
+    const vParam = u.searchParams.get('v');
+    if (vParam && vParam.length === 11) return vParam;
+    // /embed/ID
+    if (u.pathname.startsWith('/embed/')) {
+      const id = u.pathname.split('/embed/')[1];
+      if (id && id.length === 11) return id;
+    }
+    // /shorts/ID
+    if (u.pathname.startsWith('/shorts/')) {
+      const id = u.pathname.split('/shorts/')[1];
+      if (id && id.length === 11) return id;
+    }
+  } catch {/* ignorar errores de URL inválida */}
+  const match = url.match(/(?:youtube\.com\/(?:v\/|embed\/|shorts\/|watch\?v=)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return match ? match[1] : null;
 }
 
 // Función para formatear fecha
@@ -45,6 +80,18 @@ const description = "Revive nuestros mejores momentos y conciertos";
     <!-- Conciertos -->
     {concerts.map((concert) => (
       <article class="mb-20">
+        {/* Imagen del concierto si existe */}
+        {concert.data.thumbnail && (
+          <div class="mb-8 rounded-lg overflow-hidden">
+            <img 
+              src={concert.data.thumbnail}
+              alt={concert.data.title}
+              class="w-full h-64 md:h-96 object-cover"
+              loading="lazy"
+            />
+          </div>
+        )}
+
         <div class="mb-8">
           <div class="flex flex-wrap items-center gap-3 mb-3">
             <div class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-1 rounded-full text-sm font-semibold">
@@ -77,35 +124,34 @@ const description = "Revive nuestros mejores momentos y conciertos";
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {concert.data.videos.map((video) => {
+          {concert.data.videos.map((video, index) => {
             const videoId = getYouTubeId(video.video_url);
-            const thumbnail = concert.data.thumbnail 
-              ? concert.data.thumbnail 
-              : `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-            
+            if (!videoId) return null;
+            // Construir URL de miniatura - se intenta maxres y se hace fallback a hqdefault vía onerror
+            const maxRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+            const fallback = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
             return (
               <div class="video-card group">
-                <div class="relative aspect-video rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-gray-900">
-                  <img 
-                    src={thumbnail}
+                <button
+                  class="relative aspect-video rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-gray-900 w-full text-left"
+                  onclick={`openVideoModal('${videoId}', '${video.title.replace(/'/g, "\\'")}', ${index})`}
+                  aria-label={`Reproducir video: ${video.title}`}
+                >
+                  <img
+                    src={maxRes}
                     alt={video.title}
                     class="w-full h-full object-cover"
                     loading="lazy"
+                    onerror={`this.onerror=null;this.src='${fallback}';`}
                   />
-                  <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                    <a 
-                      href={video.video_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      class="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300 shadow-xl"
-                      aria-label={`Ver ${video.title}`}
-                    >
-                      <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                  <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors duration-300 flex items-center justify-center">
+                    <div class="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                      <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                       </svg>
-                    </a>
+                    </div>
                   </div>
-                </div>
+                </button>
                 <div class="mt-3">
                   <h3 class="font-semibold text-gray-900 dark:text-white text-lg">
                     {video.title}
@@ -160,5 +206,53 @@ const description = "Revive nuestros mejores momentos y conciertos";
         </a>
       </div>
     </section>
+    <!-- Modal para reproducir videos -->
+  <div id="video-modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeVideoModal()"></div>
+      <div class="relative w-full max-w-4xl mx-auto">
+        <div class="bg-neutral-900 rounded-lg overflow-hidden shadow-2xl">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-neutral-700">
+            <h3 class="text-lg font-semibold text-white" data-title>Reproduciendo</h3>
+            <button class="text-neutral-300 hover:text-white transition" onclick="closeVideoModal()" aria-label="Cerrar modal">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+          <div class="aspect-video bg-black" data-frame></div>
+        </div>
+      </div>
+    </div>
   </div>
+  <script>
+    // Abre el modal e inyecta el iframe
+    function openVideoModal(id, title) {
+      const modal = document.getElementById('video-modal');
+      if (!modal) return;
+      const frame = modal.querySelector('[data-frame]');
+      const titleEl = modal.querySelector('[data-title]');
+      if (titleEl) titleEl.textContent = title;
+      if (frame) {
+        frame.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${id}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="${title.replace(/"/g,'&quot;')}"></iframe>`;
+      }
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.classList.add('overflow-hidden');
+      // foco accesible
+      const closeBtn = modal.querySelector('button[aria-label="Cerrar modal"]');
+      (closeBtn as HTMLButtonElement | null)?.focus();
+    }
+    // Cierra el modal y limpia el iframe para parar el video
+    function closeVideoModal() {
+      const modal = document.getElementById('video-modal');
+      if (!modal) return;
+      const frame = modal.querySelector('[data-frame]');
+      if (frame) frame.innerHTML = '';
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.classList.remove('overflow-hidden');
+    }
+    // Escape para cerrar
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeVideoModal();
+    });
+  </script>
 </BaseLayout>
