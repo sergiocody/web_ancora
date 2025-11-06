@@ -4,26 +4,25 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 
-// Obtener todos los videos ordenados por fecha (más recientes primero)
-const videos = (await getCollection("gallery")).sort(
+// Obtener todos los conciertos ordenados por fecha (más recientes primero)
+const concerts = (await getCollection("gallery")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
-
-// Agrupar videos por año
-const videosByYear = videos.reduce((acc, video) => {
-  const year = video.data.date.getFullYear();
-  if (!acc[year]) acc[year] = [];
-  acc[year].push(video);
-  return acc;
-}, {} as Record<number, typeof videos>);
-
-const years = Object.keys(videosByYear).sort((a, b) => Number(b) - Number(a));
 
 // Función para extraer el ID de YouTube
 function getYouTubeId(url: string) {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   return match && match[2].length === 11 ? match[2] : null;
+}
+
+// Función para formatear fecha
+function formatDate(date: Date) {
+  return new Intl.DateTimeFormat('es-ES', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  }).format(date);
 }
 
 const title = "Galería de Videos";
@@ -43,80 +42,89 @@ const description = "Revive nuestros mejores momentos y conciertos";
       </p>
     </div>
 
-    <!-- Videos por año -->
-    {years.map((year) => {
-      const yearVideos = videosByYear[Number(year)];
-      return (
-        <section class="mb-20">
-          <div class="mb-8">
-            <div class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-1 rounded-full text-sm font-semibold mb-3">
-              {year}
+    <!-- Conciertos -->
+    {concerts.map((concert) => (
+      <article class="mb-20">
+        <div class="mb-8">
+          <div class="flex flex-wrap items-center gap-3 mb-3">
+            <div class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-1 rounded-full text-sm font-semibold">
+              {formatDate(concert.data.date)}
             </div>
+            {concert.data.event_type && (
+              <span class="text-sm text-gray-600 dark:text-gray-400">
+                {concert.data.event_type}
+              </span>
+            )}
+            {concert.data.featured && (
+              <div class="inline-block bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                Destacado
+              </div>
+            )}
           </div>
-          
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {yearVideos.map((video) => {
-              const videoId = getYouTubeId(video.data.video_url);
-              const thumbnail = video.data.thumbnail 
-                ? video.data.thumbnail 
-                : `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-              
-              return (
-                <article class="video-card group">
-                  <div class="relative aspect-video rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-gray-900">
-                    <img 
-                      src={thumbnail}
-                      alt={video.data.title}
-                      class="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                    <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-                      <a 
-                        href={video.data.video_url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        class="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300 shadow-xl"
-                        aria-label={`Ver ${video.data.title}`}
-                      >
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
-                        </svg>
-                      </a>
-                    </div>
-                    {video.data.featured && (
-                      <div class="absolute top-3 right-3 bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                        Destacado
-                      </div>
-                    )}
-                  </div>
-                  <div class="mt-3">
-                    <h3 class="font-semibold text-gray-900 dark:text-white text-lg">
-                      {video.data.title}
-                    </h3>
-                    {video.data.description && (
-                      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        {video.data.description}
-                      </p>
-                    )}
-                    {video.data.tag && video.data.tag.length > 0 && (
-                      <div class="flex gap-2 mt-2 flex-wrap">
-                        {video.data.tag.map((tag) => (
-                          <span class="text-xs bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-      );
-    })}
+          <h2 class="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white">
+            {concert.data.title}
+          </h2>
+          {concert.data.location && (
+            <p class="text-lg text-gray-600 dark:text-gray-400 mb-2">
+              <Icon name="location" class="w-5 h-5 inline-block mr-1" />
+              {concert.data.location}
+            </p>
+          )}
+          {concert.data.description && (
+            <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl">
+              {concert.data.description}
+            </p>
+          )}
+        </div>
 
-    {videos.length === 0 && (
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {concert.data.videos.map((video) => {
+            const videoId = getYouTubeId(video.video_url);
+            const thumbnail = concert.data.thumbnail 
+              ? concert.data.thumbnail 
+              : `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+            
+            return (
+              <div class="video-card group">
+                <div class="relative aspect-video rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-gray-900">
+                  <img 
+                    src={thumbnail}
+                    alt={video.title}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+                    <a 
+                      href={video.video_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      class="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300 shadow-xl"
+                      aria-label={`Ver ${video.title}`}
+                    >
+                      <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <h3 class="font-semibold text-gray-900 dark:text-white text-lg">
+                    {video.title}
+                  </h3>
+                  {video.description && (
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      {video.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </article>
+    ))}
+
+    {concerts.length === 0 && (
       <div class="text-center py-20">
         <Icon name="portfolio" class="w-20 h-20 mx-auto mb-4 text-gray-400" />
         <p class="text-xl text-gray-600 dark:text-gray-400">
