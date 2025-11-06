@@ -29,4 +29,12 @@
   function = "contact-brevo"
   path = "/api/contact-brevo"
 
+# Redirecciones para Netlify Identity
+[[redirects]]
+  from = "/*"
+  to = "/identity-redirect"
+  status = 200
+  conditions = {Role = ["identity"]}
+  force = false
+
 

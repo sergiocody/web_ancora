@@ -83,3 +83,21 @@ const pageTitle = `${title} | ${data.sitename}`;
 
 <ViewTransitions fallback="swap" />
 <script src="/scroll-timeline.js" is:inline defer></script>
+
+<!-- Netlify Identity Widget -->
+<script
+  is:inline
+  src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+<!-- Script para manejar redirecciones de Identity -->
+<script is:inline>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", (user) => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/";
+        });
+      }
+    });
+  }
+</script>
