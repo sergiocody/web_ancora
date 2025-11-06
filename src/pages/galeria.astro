@@ -3,6 +3,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
+import { Picture } from "astro-imagetools/components";
 
 // Obtener todos los conciertos ordenados por fecha (más recientes primero)
 // Tipado manual para evitar errores TS si los tipos generados aún no sincronizan
@@ -81,18 +82,6 @@ const description = "Revive nuestros mejores momentos y conciertos";
     {concerts.map((concert) => (
       <article class="mb-20">
         <div class="mb-8">
-          {/* Imagen destacada del concierto si existe */}
-          {concert.data.thumbnail && (
-            <div class="mb-6 rounded-xl overflow-hidden shadow-lg">
-              <img 
-                src={concert.data.thumbnail}
-                alt={concert.data.title}
-                class="w-full h-48 md:h-64 object-cover"
-                loading="lazy"
-              />
-            </div>
-          )}
-          
           <div class="flex flex-wrap items-center gap-3 mb-3">
             <div class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-4 py-1 rounded-full text-sm font-semibold">
               {formatDate(concert.data.date)}
@@ -108,9 +97,25 @@ const description = "Revive nuestros mejores momentos y conciertos";
               </div>
             )}
           </div>
-          <h2 class="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
             {concert.data.title}
           </h2>
+          
+          {/* Imagen destacada del concierto después del título */}
+          {concert.data.thumbnail && (
+            <div class="mb-6 rounded-xl overflow-hidden shadow-lg">
+              <Picture 
+                src={concert.data.thumbnail}
+                alt={concert.data.title}
+                attributes={{
+                  img: {
+                    class: "w-full h-48 md:h-64 object-cover"
+                  }
+                }}
+              />
+            </div>
+          )}
+          
           {concert.data.location && (
             <p class="text-lg text-gray-600 dark:text-gray-400 mb-2">
               📍 {concert.data.location}
