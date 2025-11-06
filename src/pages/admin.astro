@@ -13,15 +13,23 @@ const staticCmsVersion = "3.4.5";
 const lang = import.meta.env.WEBSITE_LANGUAGE;
 const url = Astro.site;
 
+// Detectar si estamos en desarrollo o producción
+const isDev = import.meta.env.DEV;
+
 const config = {
   locale: lang,
   site_url: url,
   logo_url: "https://nebulix.unfolding.io/logo.svg",
-  local_backend: true,
-  backend: {
-    name: "test-repo",
-    //name: "sergiocody/web_ancora",
-  },
+  // Usar local_backend solo en desarrollo
+  local_backend: isDev,
+  backend: isDev 
+    ? {
+        name: "test-repo",
+      }
+    : {
+        name: "git-gateway",
+        branch: "main", // o la rama que uses
+      },
   search: true,
   media_folder: "src/assets",
   public_folder: "/src/assets",
