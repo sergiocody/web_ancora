@@ -1,0 +1,67 @@
+---
+import { Picture } from 'astro-imagetools/components';
+
+interface Member {
+  name: string;
+  photo: string;
+  role?: string;
+}
+
+interface Props {
+  title?: string;
+  content?: string;
+  members?: Member[];
+  block_class?: string;
+  container?: string;
+}
+
+const { title, content, members = [], block_class = '', container = 'md' } = Astro.props;
+---
+
+<section class={`members-block ${block_class}`}>
+  <div class={`container-${container} py-12`}>
+    {title && (
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+          {title}
+        </h2>
+        {content && (
+          <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            {content}
+          </p>
+        )}
+      </div>
+    )}
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+      {members.map((member) => (
+        <div class="member-card group">
+          <div class="relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 mb-3">
+            <div class="aspect-square">
+              <Picture 
+                src={member.photo}
+                alt={member.name}
+                attributes={{
+                  img: {
+                    class: "w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                  }
+                }}
+              />
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+          <div class="text-center">
+            <h3 class="font-semibold text-lg text-gray-900 dark:text-white mb-1">
+              {member.name}
+            </h3>
+            {member.role && (
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                {member.role}
+              </p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -61,6 +61,15 @@ const blocks = z
 					})
 				)
 				.optional(),
+			members: z
+				.array(
+					z.object({
+						name: z.string(),
+						photo: z.string(),
+						role: z.string().optional(),
+					})
+				)
+				.optional(),
 				prices: z.array(z.object({
 				title: z.string().optional(),
 				intro: z.string().optional(),
