@@ -55,7 +55,7 @@ const pageDescription = "Conoce nuestra historia y misión";
           
           <div class="flex flex-wrap gap-4 py-8">
             <Button 
-              label="Conoce al equipo" 
+              label="Conoce a los miembros de Ancora Grupo Vocal" 
               href="/miembros" 
               color="surface-base"
               icon_only={false}
