@@ -205,7 +205,15 @@ if (props.contact.topics.length === 1) {
 }
 
 const canSubmit = computed(() => {
-  return !loading.value && isFinished.value && pass.value && !!topic.value;
+  const result = !loading.value && isFinished.value && pass.value && !!topic.value;
+  console.log('canSubmit check:', {
+    loading: loading.value,
+    isFinished: isFinished.value,
+    pass: pass.value,
+    topic: topic.value,
+    result
+  });
+  return result;
 });
 
 const mailData = computed(() => {
@@ -224,15 +232,24 @@ Message: \r\n${form.message}\r\n           `,
 });
 
 const submit = () => {
+  console.log('Submit called!');
+  console.log('Form data:', mailData.value);
+  console.log('Provider:', props.contact.provider);
+  
   loading.value = true; 
   if (!!props.contact.provider) {
+    console.log('Sending to:', `/api/contact-${props.contact.provider}`);
     fetch(`/api/contact-${props.contact.provider}`, {
       method: "POST",
       body: JSON.stringify(mailData.value),
       headers: { "Content-Type": "application/json" },
     })
-      .then((r) => r.json())
+      .then((r) => {
+        console.log('Response status:', r.status);
+        return r.json();
+      })
       .then((data) => {
+        console.log('Response data:', data);
         if (data.status === "ok") {
           toast.success(t("contact_thanks"));
           form.email = "";
@@ -242,16 +259,20 @@ const submit = () => {
           input.value = "";
           hide();
         } else {
+          console.error('Error response:', data);
           toast.error(t("contact_error"));
         }
       })
       .catch((e) => {
-        console.log("error", e);
+        console.error("Fetch error:", e);
         toast.error(t("contact_error"));
       })
       .finally(() => {
         loading.value = false;
       });
+  } else {
+    console.error('No provider configured!');
+    loading.value = false;
   }
 };
 
