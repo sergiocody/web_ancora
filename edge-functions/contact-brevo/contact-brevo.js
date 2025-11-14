@@ -169,4 +169,5 @@ export default async (request) => {
   }
 };
 
-export const config = { path: "/contact-brevo" };
+export const config = { path: "/api/contact-brevo" };
+
