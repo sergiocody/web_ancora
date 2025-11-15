@@ -1,221 +1,228 @@
-# Nebulix | Astro + Static CMS
+# Gruppo Vocale Ancora | Web oficial
 
-[![License: CC BY-ND 4.0](https://img.shields.io/badge/License-CC_BY--ND_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nd/4.0/)
+Sitio web oficial del **Gruppo Vocale Ancora**, un coro de música vocal en Zaragoza, España.
 
+## 🎵 Sobre el Proyecto
 
+Este es un sitio web moderno y rápido construido con Astro y Static CMS, diseñado específicamente para gestionar la presencia online del coro. Incluye funcionalidades para eventos, galería de conciertos, gestión de miembros y formularios de contacto.
 
+## ✨ Características Principales
 
+### 🎭 Gestión de Contenido
+- **📅 Eventos y Conciertos**: Sistema completo para publicar próximos conciertos y archivo de eventos pasados
+- **🖼️ Galería de Videos**: Integración con YouTube para mostrar videos de conciertos con thumbnails automáticas y modal inline
+- **👥 Miembros del Coro**: Gestión de miembros por secciones (sopranos, altos, tenores, bajos) con fotos y roles
+- **📝 Static CMS**: Editor visual para gestionar todo el contenido sin tocar código
 
+### 📧 Comunicación
+- **💌 Formulario de Contacto**: Integrado con Brevo (SendinBlue) para recibir mensajes
+- **📰 Newsletter**: Suscripción a newsletter mediante Brevo con gestión de listas
+- **🎯 Temas de Contacto**: Múltiples opciones (info conciertos, unirse al coro, consultas)
 
-![Nebulix](https://nebulix.unfolding.io/screenshots/nebulix-00-start.jpg)
+### 🚀 Rendimiento y SEO
+- **⚡ Lighthouse 98-100**: Optimización extrema de velocidad de carga
+- **🌍 SEO Optimizado**: URLs canónicas, OpenGraph, sitemap automático
+- **🔍 Búsqueda de Texto**: Búsqueda rápida con Pagefind
+- **♻️ Bajo CO2**: Emisiones de 0.05g - 0.07g CO2 por visita
 
-## Notice
+### 🎨 Diseño
+- **🌓 Modo Oscuro/Claro**: Cambio automático de tema
+- **📱 Responsive**: Perfectamente adaptado a móviles, tablets y desktop
+- **🎨 Bloques Dinámicos**: Sistema flexible de bloques para páginas personalizadas
 
-__This theme is currently under development, and until we reach version 1.0.0, there is a possibility that upgrading could lead to errors.__
+## 🚀 Configuración Inicial
 
-## 🛠️Deploy
-Easily deploy this theme to Netlify with a single click, and conveniently update environment variables afterward on Netlify.
+### 1. Variables de Entorno
 
+Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
+```env
+# Configuración General
+WEBSITE_LANGUAGE=es
+WEBSITE_TITLE=Gruppo Vocale Ancora
+WEBSITE_DESCRIPTION=Coro de música vocal en Zaragoza
+WEBSITE_URL=https://tu-sitio.netlify.app
+WEBSITE_AUTHOR=Gruppo Vocale Ancora
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/unfolding-io/nebulix#BLOG_SLUG=blog&PORTFOLIO_SLUG=work&SHOP_SLUG=shop&MENU_SLUG=menu&WEBSITE_LANGUAGE=en&CURRENCY=USD&UNITS=metric&NODE_VERSION=18)
-
-
-## Constellations of Features:
-
--   📰 Chart Your Path with a Blog
--   🖼 Showcase Your Stellar Portfolio
--   🍝 Illuminate Culinary Voyages with a Restaurant Menu
--   🛒 Launch Your Webshop Powered by Snipcart
--   🔍 SEO Constellations: Canonical URLs and OpenGraph radiance
--   🧭 Navigational Maps: Sitemap Support
--   📑Language of the Stars: Markdown & MDX Support
--   📝 Static CMS Ready for Galactic Exploration
-- 	🐵 Mailchimp newsletter form
--   🕵 Unveil Hidden Constellations with Full Text Search using Pagefind
-
-## ♻️ Page Speed and Emissions
-Experience the green and swift capabilities of Nebulix. With an impressively low emission of 0.05g - 0.07g CO2 per page visit and consistently achieving a lighthouse score between 98 and 100, Nebulix ensures both speed and environmental consciousness for your website.
-
-## 🚀 Getting Started
-
-### 1. Setting up the .env file
-
-rename the `env.txt` to `.env` and fill in your details
-
-```ENV
-BLOG_SLUG=blog
-PORTFOLIO_SLUG=work
-SHOP_SLUG=shop
+# Slugs de Colecciones
+BLOG_SLUG=eventos
+PORTFOLIO_SLUG=miembros
 MENU_SLUG=menu
-WEBSITE_LANGUAGE=en
-CURRENCY=USD
+
+# Configuración Regional
+CURRENCY=EUR
 UNITS=metric
-SNIPCART_KEY=<your-snipcart-public-key>
 NODE_VERSION=18
-NEWSLETTER_PROVIDER=mailchimp
-MAILCHIMP_API_KEY=XXXXXXXXXXXXXXXX-us21
-MAILCHIMP_SERVER_PREFIX=us21	
-MAILCHIMP_LIST_ID=XXXXXXXXX
 
-FROM_EMAIL_ADDRESS=[test@email.com](mailto:test@email.com)
-TO_EMAIL_ADDRESS=[test@email.com](mailto:test@email.com)
+# Email y Contacto (Brevo recomendado)
+FROM_EMAIL_ADDRESS=ancoragrupovocal@gmail.com
+TO_EMAIL_ADDRESS=ancoragrupovocal@gmail.com
+BREVO_API_KEY=tu-api-key-de-brevo
 
-MAILGUN_API_KEY=XXXXXXXXX
-MAILGUN_DOMAIN=XXXXXXXXX
-MAILGUN_API_URL=<https://api.eu.mailgun.net>
+# Newsletter (Brevo - Gratis hasta 300 emails/día)
+NEWSLETTER_PROVIDER=brevo
+BREVO_LIST_ID=2
 
-POSTMARK_SERVER_TOKEN=XXXXXXXXX
-
-SLACK_CHANNEL_ID=XXXXXXXXX
-SLACK_TOKEN=XXXXXXXXX
-
+# Newsletter Alternativa (Mailchimp)
+# NEWSLETTER_PROVIDER=mailchimp
+# MAILCHIMP_API_KEY=XXXXXXXXXXXXXXXX-us21
+# MAILCHIMP_SERVER_PREFIX=us21
+# MAILCHIMP_LIST_ID=XXXXXXXXX
 ```
 
-### 2. Configure your Static CMS Backend
+### 2. Obtener Credenciales de Brevo
 
-Navigate to `src/pages/admin.astro` and provide your Git repository details. You can find a list of all supported Git backends at:
-<https://www.staticcms.org/docs/backends-overview>
+**API Key:**
+1. Crea una cuenta gratis en [Brevo](https://www.brevo.com)
+2. Ve a https://app.brevo.com/settings/keys/api
+3. Crea una nueva API key
+4. Cópiala a `BREVO_API_KEY`
 
+**List ID para Newsletter:**
+1. Ve a https://app.brevo.com/contacts/lists
+2. Crea una nueva lista o usa una existente
+3. En la URL verás algo como `/lists/list/id/2` - ese número es tu List ID
+4. Cópialo a `BREVO_LIST_ID`
 
-**_Gitlab Example:_**
+### 3. Configurar Static CMS
 
-```javascript
+El CMS está configurado para usar GitHub con Netlify Identity. Para desarrollo local:
 
-const config = {
-	locale: lang,
-	site_url: url,
-	logo_url: 'https://nebulix.unfolding.io/nebulix-logo.svg',
-	local_backend: true,
-	backend: {
-		name: 'gitlab',
-		repo: '/<your-gitlab-repo>',
-		auth_type: 'pkce', // Required for pkce
-		app_id: 'xxxx', // Application ID from your GitLab settings
-		commit_messages: {
-			create: 'Create {{collection}} "{{slug}}"',
-			update: 'Update {{collection}} "{{slug}}"',
-			delete: 'Delete {{collection}} "{{slug}}"',
-			uploadMedia: 'Upload "{{path}}"',
-			deleteMedia: 'Delete "{{path}}"'
-		}
-	},
-	search: 'true',
-    ....
-}
-
+1. Inicia el servidor proxy del CMS:
+```bash
+npm run cms-proxy-server
 ```
 
-### 3. Add your site to the astro config
-
-```javascript
-
-export default defineConfig({
-	site: 'https://your-website.com',
-    ....
-
+2. En otro terminal, inicia el servidor de desarrollo:
+```bash
+npm run dev
 ```
 
-### 4. Install dependencies
+3. Accede al CMS en: http://localhost:4321/admin/
+
+Para producción, el CMS se conecta automáticamente a GitHub a través de Netlify.
+
+### 4. Instalar Dependencias
 
 ```bash
 $ npm install
 ```
 
-### 🛠️ 5. Start Development server
+### 5. Iniciar Servidor de Desarrollo
 
 ```bash
-$ npm run dev
+npm run dev
 ```
 
-If you wish to engage the local backend:
+El sitio estará disponible en `http://localhost:4321`
 
-```bash
-$ npm run cms-proxy-server
-```
+## 📝 Gestión de Contenido
 
-Now you can open Static CMS on http://localhost:4321/admin/
+### Eventos y Conciertos
+- **Ubicación**: `src/content/eventos/`
+- **Tipos**: Próximos conciertos y archivo de eventos pasados
+- **Campos**: Título, fecha, ubicación, tipo de evento, imagen destacada
 
+### Galería de Videos
+- **Ubicación**: `src/content/gallery/`
+- **Integración**: YouTube con thumbnails automáticas
+- **Características**: Modal inline, autoplay, responsive
 
-## ❌ Removing Collections
-If your cosmic journey excludes a blog, portfolio, shop, or restaurant menu, simply remove the corresponding documents from the `src/content`. Additionally, erase the page templates from `src/pages` .
+### Miembros del Coro
+- **Ubicación**: `src/content/miembros/`
+- **Secciones**: Sopranos, Altos, Tenores, Bajos, Director
+- **Bloque Members**: Sistema de grid para mostrar fotos y nombres de miembros individuales
 
+### Páginas Estáticas
+- **Ubicación**: `src/content/page/`
+- **Sistema de Bloques**: TextImage, Features, ImageGallery, Members, RichText
 
-## 🛸 Commands
+## 📧 Funcionalidades de Contacto
 
-All commands are run from the root of the project, from a terminal:
+### Formulario de Contacto
+- **Proveedor**: Brevo (SendinBlue)
+- **Características**: 
+  - Múltiples temas de consulta
+  - Email de respuesta automática
+  - Validación de campos
+  - Logging detallado
 
-| Command                    | Action                                           |
-| :------------------------- | :----------------------------------------------- |
-| `npm install`              | Installs dependencies                            |
-| `npm run dev`              | Starts local dev server at `localhost:4321`      |
-| `npm run cms-proxy-server` | Starts Static CMS proxy server for local-backend |
-| `npm run build`            | Build your production site to `./dist/`          |
-| `npm run preview`          | Preview your build locally, before deploying     |
-| `npm run astro ...`        | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help`  | Get help using the Astro CLI                     |
-
-## 📁 Documentation
-Learn how to harness the power of Static CMS and craft a distinctive website that stands out from the crowd.
-
-[Documentation](https://nebulix.unfolding.io/blog/tag/docs)
-
-## 🌐 Demo
-
-Witness the extraordinary speed of Nebulix in action.
-
-[Demo](https://nebulix.unfolding.io)
-
-## 👀 Want to learn more about Astro?
-
-Check out [Astro documentation](https://docs.astro.build) or jump into Astro's [Discord server](https://astro.build/chat).
-
-## 📚 Tech Stack
-
-Astro, MDX, Vue, TailwindCSS, Pagefind, Snipcart
-
-## 🛟 Support
-
-If you encounter any issues or bugs, we encourage you to open an issue in the repository. To help us quickly address the problem, please provide detailed information about the bug and steps to reproduce it.
-
-## 👑 Premium Support
-
-For those seeking priority assistance, we offer premium support services. Do you need support, custom intergrations, design, or development? Feel free to reach out to me by email at [hello@unfolding.io.](mailto:hello@unfolding.io.) find me on [UpWork](https://www.upwork.com/freelancers/~01dcde6b3915c74c30) Im here to help!
+### Newsletter
+- **Proveedor**: Brevo (recomendado) o Mailchimp
+- **Ubicación**: Footer de todas las páginas
+- **Funcionalidad**: Suscripción con validación de email y detección de duplicados
 
 
-## 📝 License
+## 🛸 Comandos Disponibles
 
-Want to get rid of the attribution? Simply [purchase a license](https://nebulix.unfolding.io/shop/nebulix-license/) and you're good to go.
+| Comando                    | Descripción                                               |
+| :------------------------- | :-------------------------------------------------------- |
+| `npm install`              | Instalar dependencias                                      |
+| `npm run dev`              | Iniciar servidor de desarrollo en `localhost:4321`         |
+| `npm run cms-proxy-server` | Iniciar servidor proxy de Static CMS para desarrollo local|
+| `npm run build`            | Compilar sitio para producción en `./dist/`                |
+| `npm run preview`          | Previsualizar build localmente antes de desplegar          |
 
-## 🚕 Roadmap
+## 🚀 Despliegue en Netlify
 
-As we journey towards v1.0, our path includes enriching the page builder with a diverse array of new blocks, upgrading dependencies to ensure optimal performance, and introducing exciting features. We're eager to hear from you! If you have any feature requests, please feel free to reach out and let us know.
+### Configuración Requerida
 
-## ☕️ Want to Caffeinate your Developer?
+1. **Variables de Entorno en Netlify**:
+   - Ve a Site settings → Environment variables
+   - Añade todas las variables del archivo `.env`
+   - Especialmente importantes:
+     - `BREVO_API_KEY`
+     - `FROM_EMAIL_ADDRESS`
+     - `TO_EMAIL_ADDRESS`
+     - `NEWSLETTER_PROVIDER`
+     - `BREVO_LIST_ID`
 
-By [caffeinating](https://www.buymeacoffee.com/unfolding.io) your developer, you're not just getting the best out of them; you're also ensuring a cheerful and energetic work environment.😊
+2. **Edge Functions**:
+   - Se despliegan automáticamente
+   - Funciones disponibles:
+     - `/api/contact-brevo` - Formulario de contacto
+     - `/api/subscribe-brevo` - Suscripción newsletter
 
-[![buymeacoffee](https://starfunnel.unfolding.io/screenshots/bymeacoffee.webp)](https://www.buymeacoffee.com/unfolding.io)
+3. **Build Settings**:
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+   - Node version: 18
 
+## 📚 Stack Tecnológico
 
+- **Framework**: [Astro v5](https://astro.build) - SSG ultrarrápido
+- **CMS**: [Static CMS](https://www.staticcms.org) - Editor visual Git-based
+- **UI Components**: Vue 3 - Componentes interactivos
+- **Estilos**: TailwindCSS - Utility-first CSS
+- **Búsqueda**: Pagefind - Búsqueda de texto completo
+- **Email**: Brevo (SendinBlue) - Contacto y newsletter
+- **Hosting**: Netlify - Edge functions y CDN global
+- **Gestión de Imágenes**: astro-imagetools - Optimización automática
 
-## 📸 Screenshots
+## 📖 Documentación Adicional
 
-![Nebulix](https://nebulix.unfolding.io/screenshots/nebulix-01-shop.jpg)
+- **NETLIFY_SETUP.md**: Guía completa de configuración de Netlify
+- **TESTING_CONTACT.md**: Cómo probar y debuggear el formulario de contacto
+- **Configuración CMS**: Ver archivos en `src/cms/` para personalizar el editor
 
-![Nebulix](https://nebulix.unfolding.io/screenshots/nebulix-02-shop-category.jpg)
+## 🎵 Sobre Gruppo Vocale Ancora
 
-![Nebulix](https://nebulix.unfolding.io/screenshots/nebulix-03-shop-product.jpg)
+Coro de música vocal ubicado en Zaragoza, España. Este sitio web gestiona toda la presencia online del coro incluyendo:
+- Información sobre próximos conciertos
+- Galería de videos de actuaciones
+- Información de los miembros del coro
+- Formulario de contacto para consultas
+- Newsletter para mantenerse informado
 
-![Nebulix](https://nebulix.unfolding.io/screenshots/nebulix-04-shop-product.jpg)
+## 📝 Licencia
 
-![Nebulix](https://nebulix.unfolding.io/screenshots/nebulix-05-shop-product-dark.jpg)
+Basado en Nebulix theme. Para más información sobre licencias, consulta el archivo LICENSE.md.
 
-![Nebulix](https://nebulix.unfolding.io/screenshots/nebulix-06-blogpost.jpg)
+## 🎭 Créditos
 
-![Nebulix](https://nebulix.unfolding.io/screenshots/nebulix-07-portfolio.jpg)
-
-![Nebulix](https://nebulix.unfolding.io/screenshots/nebulix-08-footer.jpg)
+- **Theme Original**: [Nebulix](https://nebulix.unfolding.io) by Unfolding.io
+- **Personalización**: Adaptado para Gruppo Vocale Ancora
+- **Tecnología**: Powered by Astro, Static CMS, Brevo y Netlify
 
 
 
