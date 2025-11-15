@@ -61,7 +61,7 @@ const submit = () => {
     ? "/api/subscribe-mailchimp" 
     : "/api/subscribe-brevo";
   
-  console.log(`Subscribing to ${props.type} via ${endpoint}`);
+  console.log(`Suscribiendo a ${props.type} vía ${endpoint}`);
   
   fetch(endpoint, {
     method: "POST",
@@ -70,7 +70,7 @@ const submit = () => {
   })
     .then((r) => r.json())
     .then((data) => {
-      console.log('Newsletter response:', data);
+      console.log('Respuesta newsletter:', data);
       
       if (props.type === "mailchimp") {
         // Mailchimp responses
@@ -97,7 +97,7 @@ const submit = () => {
       }
     })
     .catch((e) => {
-      console.error('Newsletter error:', e);
+      console.error('Error newsletter:', e);
       message.value = t("newsletter_error");
       toast.error(t("newsletter_error"));
     })

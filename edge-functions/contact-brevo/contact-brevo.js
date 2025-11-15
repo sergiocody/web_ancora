@@ -19,14 +19,14 @@ export default async (request) => {
     phone = phoneMatch ? phoneMatch[1].trim() : "";
     const cleanMessage = messageMatch ? messageMatch[1].trim() : message;
     
-    console.log("Contact form data:", { name, email, topic, phone });
+    console.log("Datos formulario de contacto:", { name, email, topic, phone });
     
   } catch (e) {
-    console.error("Error parsing request:", e);
+    console.error("Error al procesar solicitud:", e);
     return new Response(
       JSON.stringify({ 
         status: "error",
-        error: "Invalid request body",
+        error: "Datos de solicitud inválidos",
         details: e.message 
       }),
       {
@@ -41,11 +41,11 @@ export default async (request) => {
   const FROM_EMAIL = process.env.FROM_EMAIL_ADDRESS;
 
   if (!BREVO_API_KEY) {
-    console.error("BREVO_API_KEY not configured");
+    console.error("BREVO_API_KEY no configurada");
     return new Response(
       JSON.stringify({ 
         status: "error",
-        error: "Brevo API key not configured" 
+        error: "Clave API de Brevo no configurada" 
       }),
       {
         status: 500,
@@ -55,11 +55,11 @@ export default async (request) => {
   }
   
   if (!FROM_EMAIL || !TO_EMAIL) {
-    console.error("Email addresses not configured");
+    console.error("Direcciones de email no configuradas");
     return new Response(
       JSON.stringify({ 
         status: "error",
-        error: "Email addresses not configured" 
+        error: "Direcciones de email no configuradas" 
       }),
       {
         status: 500,
@@ -69,7 +69,7 @@ export default async (request) => {
   }
 
   try {
-    console.log("Sending email via Brevo API...");
+    console.log("Enviando email vía API de Brevo...");
     const response = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
@@ -128,11 +128,11 @@ export default async (request) => {
 
     if (!response.ok) {
       const error = await response.json();
-      console.error("Brevo API error:", error);
+      console.error("Error API Brevo:", error);
       return new Response(
         JSON.stringify({ 
           status: "error",
-          error: "Error sending email", 
+          error: "Error al enviar email", 
           details: error 
         }),
         {
@@ -142,11 +142,11 @@ export default async (request) => {
       );
     }
 
-    console.log("Email sent successfully via Brevo");
+    console.log("Email enviado exitosamente vía Brevo");
     return new Response(
       JSON.stringify({ 
         status: "ok",
-        message: "Email sent successfully" 
+        message: "Email enviado exitosamente" 
       }),
       {
         status: 200,
@@ -154,11 +154,11 @@ export default async (request) => {
       }
     );
   } catch (error) {
-    console.error("Unexpected error:", error);
+    console.error("Error inesperado:", error);
     return new Response(
       JSON.stringify({ 
         status: "error",
-        error: "Internal server error", 
+        error: "Error interno del servidor", 
         details: error.message 
       }),
       {

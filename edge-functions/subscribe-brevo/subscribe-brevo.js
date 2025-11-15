@@ -5,11 +5,11 @@ export default async (request) => {
   const BREVO_LIST_ID = process.env.BREVO_LIST_ID || "2"; // Default list ID
 
   if (!BREVO_API_KEY) {
-    console.error("BREVO_API_KEY not configured");
+    console.error("BREVO_API_KEY no configurada");
     return new Response(
       JSON.stringify({ 
         status: "error",
-        error: "Brevo API key not configured" 
+        error: "Clave API de Brevo no configurada" 
       }),
       {
         status: 500,
@@ -28,7 +28,7 @@ export default async (request) => {
       return new Response(
         JSON.stringify({ 
           status: "error",
-          error: "Missing email" 
+          error: "Email requerido" 
         }),
         {
           status: 400,
@@ -37,14 +37,14 @@ export default async (request) => {
       );
     }
 
-    console.log("Subscribing email to Brevo list:", email);
+    console.log("Suscribiendo email a lista de Brevo:", email);
     
   } catch (e) {
-    console.error("Error parsing request:", e);
+    console.error("Error al procesar solicitud:", e);
     return new Response(
       JSON.stringify({ 
         status: "error",
-        error: "Invalid request body" 
+        error: "Datos de solicitud inválidos" 
       }),
       {
         status: 400,
@@ -73,11 +73,11 @@ export default async (request) => {
     // Si el contacto ya existe, Brevo devuelve 400 con code: "duplicate_parameter"
     if (!response.ok) {
       if (data.code === "duplicate_parameter") {
-        console.log("Contact already exists:", email);
+        console.log("Contacto ya existe:", email);
         return new Response(
           JSON.stringify({ 
             status: "subscribed",
-            message: "Already subscribed",
+            message: "Ya está suscrito",
             email: email
           }),
           {
@@ -87,11 +87,11 @@ export default async (request) => {
         );
       }
       
-      console.error("Brevo API error:", data);
+      console.error("Error API Brevo:", data);
       return new Response(
         JSON.stringify({ 
           status: "error",
-          error: "Error subscribing to newsletter",
+          error: "Error al suscribirse a la newsletter",
           details: data
         }),
         {
@@ -101,11 +101,11 @@ export default async (request) => {
       );
     }
 
-    console.log("Successfully subscribed:", email);
+    console.log("Suscripción exitosa:", email);
     return new Response(
       JSON.stringify({ 
         status: "pending",
-        message: "Successfully subscribed",
+        message: "Suscripción exitosa",
         email: email,
         id: data.id
       }),
@@ -116,11 +116,11 @@ export default async (request) => {
     );
 
   } catch (error) {
-    console.error("Unexpected error:", error);
+    console.error("Error inesperado:", error);
     return new Response(
       JSON.stringify({ 
         status: "error",
-        error: "Internal server error",
+        error: "Error interno del servidor",
         details: error.message
       }),
       {
