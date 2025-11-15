@@ -55,15 +55,25 @@ const canSubmit = computed(() => {
 });
 
 const submit = () => {
-  if (props.type === "mailchimp") {
-    loading.value = true;
-    fetch("/api/subscribe-mailchimp", {
-      method: "POST",
-      body: JSON.stringify({ email: form.email }),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((r) => r.json())
-      .then((data) => {
+  loading.value = true;
+  
+  const endpoint = props.type === "mailchimp" 
+    ? "/api/subscribe-mailchimp" 
+    : "/api/subscribe-brevo";
+  
+  console.log(`Subscribing to ${props.type} via ${endpoint}`);
+  
+  fetch(endpoint, {
+    method: "POST",
+    body: JSON.stringify({ email: form.email }),
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((r) => r.json())
+    .then((data) => {
+      console.log('Newsletter response:', data);
+      
+      if (props.type === "mailchimp") {
+        // Mailchimp responses
         if (data.status === "pending") {
           toast.success(t("newsletter_thanks"));
           form.email = "";
@@ -73,14 +83,26 @@ const submit = () => {
         } else {
           toast.error(t("newsletter_error"));
         }
-      })
-      .catch((e) => {
-        message.value = t("newsletter_error");
-        toast.error(t("newsletter_error"));
-      })
-      .finally(() => {
-        loading.value = false;
-      });
-  }
+      } else {
+        // Brevo responses
+        if (data.status === "pending" || data.status === "ok") {
+          toast.success(t("newsletter_thanks"));
+          form.email = "";
+        } else if (data.status === "subscribed") {
+          toast.info(t("newsletter_already_subscribed"));
+          form.email = "";
+        } else {
+          toast.error(t("newsletter_error"));
+        }
+      }
+    })
+    .catch((e) => {
+      console.error('Newsletter error:', e);
+      message.value = t("newsletter_error");
+      toast.error(t("newsletter_error"));
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 </script>
