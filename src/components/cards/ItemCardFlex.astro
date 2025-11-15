@@ -7,6 +7,10 @@ import ProductPrice from "@components/shop/ProductPrice.astro";
 const { content, base_url, animate } = Astro.props;
 
 const animation = `hero_${animate ? content.slug : Math.random()}`;
+
+// Detectar si es un evento futuro
+const now = new Date();
+const isFutureEvent = content.data.pubDate && new Date(content.data.pubDate) > now;
 ---
 
 <a
@@ -41,9 +45,16 @@ const animation = `hero_${animate ? content.slug : Math.random()}`;
   <div class="opacity-90 group-hover:opacity-100">
     {
       content.data.pubDate && (
-        <span class="text-overline text-xs">
-          <FormattedDate date={content.data.pubDate} />
-        </span>
+        <div class="flex flex-col items-center gap-1">
+          <span class="text-overline text-xs">
+            <FormattedDate date={content.data.pubDate} />
+          </span>
+          {isFutureEvent && (
+            <span class="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">
+              Próximo evento
+            </span>
+          )}
+        </div>
       )
     }
     <h2 class="subtitle balance font-bold group-hover:text-primary">
