@@ -44,7 +44,22 @@ BREVO_API_KEY = tu-api-key-de-brevo
 
 > **Nota sobre Brevo**: Obtén tu API key en https://app.brevo.com/settings/keys/api
 
-#### Variables para Newsletter (si usas Mailchimp)
+#### Variables para Newsletter
+
+**Opción 1: Brevo (Recomendado - Gratis)**
+
+```
+NEWSLETTER_PROVIDER = brevo
+BREVO_LIST_ID = 2
+```
+
+> **Cómo obtener el List ID de Brevo:**
+> 1. Ve a https://app.brevo.com/contacts/lists
+> 2. Haz clic en la lista que quieres usar
+> 3. En la URL verás algo como `/lists/list/id/2` - el número al final es tu List ID
+> 4. Si no tienes lista, crea una nueva ("New List")
+
+**Opción 2: Mailchimp**
 
 ```
 NEWSLETTER_PROVIDER = mailchimp
