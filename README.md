@@ -221,7 +221,7 @@ Basado en Nebulix theme. Para más información sobre licencias, consulta el arc
 ## 🎭 Créditos
 
 - **Theme Original**: [Nebulix](https://nebulix.unfolding.io) by Unfolding.io
-- **Personalización**: Adaptado para Gruppo Vocale Ancora
+- **Personalización**: Adaptado para Grupo Vocal Ancora
 - **Tecnología**: Powered by Astro, Static CMS, Brevo y Netlify
 
 

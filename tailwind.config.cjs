@@ -17,8 +17,10 @@ module.exports = {
         info: "rgb(var(--color-info) / <alpha-value>)",
       },
       fontFamily: {
-        sans: ["'Inter Tight Variable'", "Helvetica", "Verdana", "sans-serif"],
-        body: ["'Inter Tight Variable'", "Helvetica", "Verdana", "sans-serif"],
+        sans: ["Helvetica", "Arial", "sans-serif"],
+        body: ["Helvetica", "Arial", "sans-serif"],
+        serif: ["'Noto Serif Display'", "Georgia", "serif"],
+        heading: ["'Noto Serif Display'", "Georgia", "serif"],
       },
       boxShadow: {
         inset: " inset 2px 2px 40px -20px rgba(0, 0, 0, 0.3)",

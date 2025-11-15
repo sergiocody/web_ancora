@@ -131,24 +131,19 @@ body {
   }
 }
 
-@font-face {
-  font-family: "Adjusted Arial Fallback";
-  src: local(Arial);
-  size-adjust: 105%;
-  ascent-override: normal;
-  descent-override: normal;
-  line-gap-override: normal;
-}
-
 /* BASE ELEMENTS */
 body {
   @screen xs {
     --spacing: 2rem;
   }
-  font-family: "Inter Tight Variable", "Adjusted Arial Fallback", "arial",
-    sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   --container-spacing: calc(var(--spacing) * 2);
   --grid-spacing: calc(var(--spacing) / 2);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Noto Serif Display', Georgia, serif;
+  font-weight: 600;
 }
 
 .container {
