@@ -2,7 +2,6 @@
 title: Ancora Solidario
 description: Música con propósito, voces que ayudan
 intro: Cuando la música se une a la solidaridad, nacen proyectos que transforman vidas
-thumbnail: /src/assets/solidarity.jpg
 pubDate: 2025-11-16
 layout-hidden: false
 hero_buttons:
@@ -12,17 +11,6 @@ hero_buttons:
     icon_only: false
     icon: /src/icons/down-line.svg
     color: surface-primary
-  - component: Link
-    label: Ver eventos
-    href: /eventos
-    icon_only: false
-    color: light
-style:
-  template: full
-  hero_template: image
-  container: lg
-  hero_surface: surface-dark
-  hero_image_opacity: "0.6"
 blocks:
   - type: rich_text
     component: RichText
@@ -59,7 +47,7 @@ blocks:
     title: Impacto Real
     container: md
     block_class: py-16 bg-slate-100 dark:bg-slate-900
-    image_size: lg
+    image_size: ""
     reverse: false
     animate: false
     thumbnail: /src/assets/solidarity2.jpg
@@ -68,9 +56,7 @@ blocks:
 
 
       En los últimos años, nuestros conciertos solidarios han ayudado a recaudar fondos destinados a diferentes causas sociales. Cada nota que cantamos tiene un propósito que va más allá de la música.
-
-
-      Hemos colaborado con organizaciones como Cruz Roja, bancos de alimentos, y asociaciones de apoyo a personas con discapacidad, llevando nuestra música donde más se necesita.
+    template: column
   - type: rich_text
     component: RichText
     container: md
@@ -92,5 +78,11 @@ blocks:
 
 
       Juntos podemos hacer que la música llegue a quienes más la necesitan.
+style:
+  template: full
+  hero_template: image
+  container: lg
+  hero_surface: surface-dark
+  hero_image_opacity: "0.6"
+thumbnail: /src/assets/solidarity.jpg
 ---
-
