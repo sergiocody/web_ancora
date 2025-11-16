@@ -204,6 +204,26 @@ if (props.contact.topics.length === 1) {
   setTopic(props.contact.topics[0]);
 }
 
+// Detectar topic desde data-topic del elemento que abrió el diálogo
+watch(() => showContact.value, (isOpen) => {
+  if (isOpen) {
+    // Buscar el elemento que disparó la apertura del diálogo
+    const triggerElement = document.querySelector('[data-topic]');
+    if (triggerElement) {
+      const requestedTopic = triggerElement.getAttribute('data-topic');
+      if (requestedTopic) {
+        // Buscar el topic correspondiente en la lista
+        const matchingTopic = props.contact.topics.find(
+          t => t.label.toLowerCase() === requestedTopic.toLowerCase()
+        );
+        if (matchingTopic) {
+          setTopic(matchingTopic);
+        }
+      }
+    }
+  }
+});
+
 const canSubmit = computed(() => {
   const result = !loading.value && isFinished.value && pass.value && !!topic.value;
   console.log('canSubmit check:', {
