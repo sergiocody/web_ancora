@@ -134,7 +134,7 @@
 import { ref, watch, onMounted, reactive, computed } from "vue";
 import { t } from "@util/translate";
 import { useStore } from "@nanostores/vue";
-import { showContact } from "@src/store";
+import { showContact, contactTopic } from "@src/store";
 import { useAsyncValidator } from "@vueuse/integrations/useAsyncValidator";
 import { useTextareaAutosize } from "@vueuse/core";
 import Loading from "@components/common/Loading.vue";
@@ -155,6 +155,7 @@ const props = defineProps({
 });
 
 const $show = useStore(showContact);
+const $contactTopic = useStore(contactTopic);
 const form = reactive({ email: "", name: "", message: "", phone: "" });
 const { textarea, input } = useTextareaAutosize();
 
@@ -204,31 +205,18 @@ if (props.contact.topics.length === 1) {
   setTopic(props.contact.topics[0]);
 }
 
-// Detectar topic desde data-topic del elemento que abrió el diálogo
-watch(() => showContact.value, (isOpen) => {
-  if (isOpen) {
-    // Pequeño delay para asegurar que el DOM esté actualizado
-    setTimeout(() => {
-      // Buscar el elemento que disparó la apertura del diálogo
-      const triggerElement = document.querySelector('[data-topic]:hover, [data-topic]:focus, [data-topic]:active');
-      const fallbackElement = document.querySelector('[data-topic]');
-      const element = triggerElement || fallbackElement;
-      
-      if (element) {
-        const requestedTopic = element.getAttribute('data-topic');
-        console.log('Topic detectado:', requestedTopic);
-        if (requestedTopic) {
-          // Buscar el topic correspondiente en la lista
-          const matchingTopic = props.contact.topics.find(
-            t => t.label.toLowerCase() === requestedTopic.toLowerCase()
-          );
-          console.log('Matching topic:', matchingTopic);
-          if (matchingTopic) {
-            setTopic(matchingTopic);
-          }
-        }
-      }
-    }, 100);
+// Detectar topic desde el store cuando se abre el diálogo
+watch(() => $contactTopic.value, (requestedTopic) => {
+  if (requestedTopic && $show.value) {
+    // Buscar el topic correspondiente en la lista
+    const matchingTopic = props.contact.topics.find(
+      t => t.label.toLowerCase() === requestedTopic.toLowerCase()
+    );
+    if (matchingTopic) {
+      setTopic(matchingTopic);
+      // Limpiar el topic del store después de usarlo
+      contactTopic.set(null);
+    }
   }
 });
 

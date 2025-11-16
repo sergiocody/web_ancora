@@ -9,6 +9,7 @@ export const activeProduct = atom({
 export const productVariations = atom([]);
 export const productExtraPrice = atom(0);
 export const showContact = atom(false);
+export const contactTopic = atom(null);
 
 export function setCookie(value) {
   cookies.set(value);

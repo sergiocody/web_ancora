@@ -6,7 +6,7 @@
 import { watch, ref, onMounted } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import { useDebounceFn } from "@vueuse/core";
-import { showContact } from "@src/store";
+import { showContact, contactTopic } from "@src/store";
 const { width } = useWindowSize();
 const shown = ref(false);
 
@@ -87,6 +87,10 @@ onMounted(() => {
   contactButtons.forEach((el) => {
     el.addEventListener("click", (e) => {
       e.preventDefault();
+      const topic = el.getAttribute('data-topic');
+      if (topic) {
+        contactTopic.set(topic);
+      }
       showContact.set(true);
     });
   });
