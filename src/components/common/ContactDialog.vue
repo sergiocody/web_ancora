@@ -67,6 +67,7 @@
               <div class="input-group">
                 <label class="field-label">{{ t("name") }} *</label>
                 <input
+                  ref="nameInput"
                   type="text"
                   name="name"
                   class="surface-overlay"
@@ -157,6 +158,7 @@ const props = defineProps({
 const $show = useStore(showContact);
 const $contactTopic = useStore(contactTopic);
 const form = reactive({ email: "", name: "", message: "", phone: "" });
+const nameInput = ref(null);
 const { textarea, input } = useTextareaAutosize();
 
 const rules = {
@@ -220,6 +222,12 @@ watch(() => $show.value, (isOpen) => {
     console.log('Topic encontrado:', matchingTopic);
     if (matchingTopic) {
       setTopic(matchingTopic);
+      // Enfocar el campo nombre después de un pequeño delay
+      setTimeout(() => {
+        if (nameInput.value) {
+          nameInput.value.focus();
+        }
+      }, 100);
     }
     // Limpiar el topic del store después de usarlo
     contactTopic.set(null);
