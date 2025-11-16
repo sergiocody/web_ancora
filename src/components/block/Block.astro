@@ -12,6 +12,7 @@ const { slot, ...props } = Astro.props;
 ---
 
 <section
+  id={props.id || undefined}
   class={`${props.surface || ""} ${
     props.block_class ? props.block_class : "py-8 sm:py-20"
   }`}

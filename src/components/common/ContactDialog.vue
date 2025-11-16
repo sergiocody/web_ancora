@@ -206,17 +206,23 @@ if (props.contact.topics.length === 1) {
 }
 
 // Detectar topic desde el store cuando se abre el diálogo
-watch(() => $contactTopic.value, (requestedTopic) => {
-  if (requestedTopic && $show.value) {
+watch(() => $show.value, (isOpen) => {
+  if (isOpen && $contactTopic.value) {
+    const requestedTopic = $contactTopic.value;
+    console.log('Intentando seleccionar topic:', requestedTopic);
+    console.log('Topics disponibles:', props.contact.topics.map(t => t.label));
+    
     // Buscar el topic correspondiente en la lista
     const matchingTopic = props.contact.topics.find(
       t => t.label.toLowerCase() === requestedTopic.toLowerCase()
     );
+    
+    console.log('Topic encontrado:', matchingTopic);
     if (matchingTopic) {
       setTopic(matchingTopic);
-      // Limpiar el topic del store después de usarlo
-      contactTopic.set(null);
     }
+    // Limpiar el topic del store después de usarlo
+    contactTopic.set(null);
   }
 });
 
