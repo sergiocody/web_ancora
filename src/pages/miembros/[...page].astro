@@ -19,8 +19,8 @@ const base_url = import.meta.env.PORTFOLIO_SLUG;
 const { page } = Astro.props;
 const { data } = await getEntry("config", "miembros");
 
-// Usar el orden de project_tags del config en lugar del orden automático
-const tag = data.project_tags ? data.project_tags.map((t) => t.name) : [];
+// Usar filters en lugar de tag para que funcione con ItemFilter
+const filters = data.project_tags ? data.project_tags.map((t) => t.name) : [];
 ---
 
-<PageLayoutArchive {page} {tag} {data} {base_url} />
+<PageLayoutArchive {page} {filters} {data} {base_url} />
