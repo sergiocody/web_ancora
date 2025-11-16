@@ -207,20 +207,28 @@ if (props.contact.topics.length === 1) {
 // Detectar topic desde data-topic del elemento que abrió el diálogo
 watch(() => showContact.value, (isOpen) => {
   if (isOpen) {
-    // Buscar el elemento que disparó la apertura del diálogo
-    const triggerElement = document.querySelector('[data-topic]');
-    if (triggerElement) {
-      const requestedTopic = triggerElement.getAttribute('data-topic');
-      if (requestedTopic) {
-        // Buscar el topic correspondiente en la lista
-        const matchingTopic = props.contact.topics.find(
-          t => t.label.toLowerCase() === requestedTopic.toLowerCase()
-        );
-        if (matchingTopic) {
-          setTopic(matchingTopic);
+    // Pequeño delay para asegurar que el DOM esté actualizado
+    setTimeout(() => {
+      // Buscar el elemento que disparó la apertura del diálogo
+      const triggerElement = document.querySelector('[data-topic]:hover, [data-topic]:focus, [data-topic]:active');
+      const fallbackElement = document.querySelector('[data-topic]');
+      const element = triggerElement || fallbackElement;
+      
+      if (element) {
+        const requestedTopic = element.getAttribute('data-topic');
+        console.log('Topic detectado:', requestedTopic);
+        if (requestedTopic) {
+          // Buscar el topic correspondiente en la lista
+          const matchingTopic = props.contact.topics.find(
+            t => t.label.toLowerCase() === requestedTopic.toLowerCase()
+          );
+          console.log('Matching topic:', matchingTopic);
+          if (matchingTopic) {
+            setTopic(matchingTopic);
+          }
         }
       }
-    }
+    }, 100);
   }
 });
 
