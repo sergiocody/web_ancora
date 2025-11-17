@@ -24,9 +24,12 @@ let base_url;
 let posts;
 if (page_type === "blog" || page_type === "eventos") {
   base_url = import.meta.env.BLOG_SLUG;
-  posts = (await getCollection("eventos")).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-  );
+  const now = new Date();
+  posts = (await getCollection("eventos"))
+    .filter((post) => new Date(post.data.pubDate) > now)
+    .sort(
+      (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+    );
 
   if (post_tag && post_tag.length > 0)
     posts = posts.filter(
