@@ -86,6 +86,34 @@ blocks:
         icon: /src/icons/news.svg
   - type: rich_text
     component: RichText
+    container: md
+    block_class: py-20 bg-slate-100 dark:bg-slate-900 text-center
+    content: |
+      ### Únete a nuestra comunidad
+
+      **🎵 Síguenos en redes sociales**
+      
+      Mantente al día de nuestros conciertos, ensayos y momentos especiales
+
+      <div class="flex justify-center gap-6 my-8">
+        <a href="https://www.instagram.com/uxxx" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary hover:bg-opacity-80 transition-all">
+          <img src="/src/icons/instagram.svg" alt="Instagram" class="w-7 h-7" />
+        </a>
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary hover:bg-opacity-80 transition-all">
+          <img src="/src/icons/facebook.svg" alt="Facebook" class="w-7 h-7" />
+        </a>
+        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary hover:bg-opacity-80 transition-all">
+          <img src="/src/icons/youtube.svg" alt="YouTube" class="w-7 h-7" />
+        </a>
+      </div>
+
+      **📧 Suscríbete a nuestro boletín**
+      
+      Recibe las noticias más destacadas y la información de próximos eventos
+
+      <Newsletter client:visible type="mailchimp" class="justify-center mt-6" />
+  - type: rich_text
+    component: RichText
     container: sm
     content: |
       ## Nuestros Miembros
