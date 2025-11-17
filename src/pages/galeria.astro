@@ -1,48 +1,29 @@
 ---
-/* GALERÍA DE VIDEOS */
+/* GALERÍA DE FOTOS Y VIDEOS */
 import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { Icon } from "astro-icon/components";
 import { Picture } from "astro-imagetools/components";
 
-// Obtener todos los conciertos ordenados por fecha (más recientes primero)
-// Tipado manual para evitar errores TS si los tipos generados aún no sincronizan
-interface ConcertVideo { title: string; video_url: string; description?: string }
-interface ConcertData {
-  title: string;
-  date: Date;
-  description?: string;
-  thumbnail?: string;
-  location?: string;
-  event_type?: string;
-  featured?: boolean;
-  videos: ConcertVideo[];
-}
-interface ConcertEntry { data: ConcertData; [key: string]: any }
-
-// Cast "gallery" as any temporal hasta que los tipos se sincronicen
-const concerts = (await getCollection("gallery" as any) as unknown as ConcertEntry[]).sort(
-  (a, b) => a.data.date && b.data.date ? b.data.date.valueOf() - a.data.date.valueOf() : 0
+// Obtener todos los items de galería ordenados por fecha (más recientes primero)
+const galleryItems = (await getCollection("gallery")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 
-// Función robusta para extraer el ID de YouTube (soporta distintos formatos: watch, youtu.be, embed, shorts)
+// Función para extraer el ID de YouTube
 function getYouTubeId(url: string) {
   if (!url) return null;
   try {
     const u = new URL(url);
-    // youtu.be/ID
     if (u.hostname === 'youtu.be' && u.pathname.length > 1) {
       return u.pathname.slice(1);
     }
-    // ?v=ID
     const vParam = u.searchParams.get('v');
     if (vParam && vParam.length === 11) return vParam;
-    // /embed/ID
     if (u.pathname.startsWith('/embed/')) {
       const id = u.pathname.split('/embed/')[1];
       if (id && id.length === 11) return id;
     }
-    // /shorts/ID
     if (u.pathname.startsWith('/shorts/')) {
       const id = u.pathname.split('/shorts/')[1];
       if (id && id.length === 11) return id;
@@ -61,142 +42,114 @@ function formatDate(date: Date) {
   }).format(date);
 }
 
-const title = "Galería de Videos";
-const description = "Revive nuestros mejores momentos y conciertos";
+const title = "Galería";
+const description = "Nuestros mejores momentos en fotos y videos";
 ---
 
 <BaseLayout title={title} description={description}>
   <div class="container-xl py-12">
     <!-- Header -->
-    <div class="text-center mb-16">
-      <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
         {title}
       </h1>
-      <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed font-light max-w-3xl mx-auto">
-        Cada actuación es un momento único donde la música y la emoción se unen para crear 
-        <span class="font-semibold text-primary">recuerdos inolvidables</span>
+      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+        {description}
       </p>
     </div>
 
-    <!-- Conciertos -->
-    {concerts.map((concert) => (
-      <article class="mb-20">
-        {/* Badges y metadata arriba */}
-        <div class="flex flex-wrap items-center gap-3 mb-4">
-          <div class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-semibold">
-            {formatDate(concert.data.date)}
-          </div>
-          {concert.data.event_type && (
-            <span class="text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
-              {concert.data.event_type}
-            </span>
-          )}
-          {concert.data.featured && (
-            <div class="inline-block bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-              ⭐ Destacado
+    <!-- Grid de items -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {galleryItems.map((item) => {
+        const isVideo = item.data.media_type === 'video';
+        const videoId = isVideo && item.data.video_url ? getYouTubeId(item.data.video_url) : null;
+        const thumbnail = item.data.thumbnail || (videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '/images/piano.jpg');
+        
+        return (
+          <article class="group relative bg-white dark:bg-slate-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
+            {/* Imagen/Thumbnail */}
+            <div class="relative aspect-video overflow-hidden bg-slate-200 dark:bg-slate-700">
+              {item.data.thumbnail ? (
+                <Picture
+                  src={thumbnail}
+                  alt={item.data.title}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                  attributes={{
+                    picture: { class: "h-full" },
+                    img: { class: "h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" }
+                  }}
+                />
+              ) : videoId ? (
+                <img 
+                  src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                  alt={item.data.title}
+                  class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="h-full w-full flex items-center justify-center bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900 dark:to-blue-900">
+                  <Icon name={isVideo ? "youtube" : "image"} class="w-16 h-16 text-purple-400" />
+                </div>
+              )}
+              
+              {/* Badge de tipo */}
+              {isVideo && (
+                <div class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded-md text-xs font-semibold flex items-center gap-1">
+                  <Icon name="youtube" class="w-4 h-4" />
+                  Video
+                </div>
+              )}
+              
+              {/* Overlay de play para videos */}
+              {isVideo && videoId && (
+                <button
+                  onclick={`openVideoModal('${videoId}', '${item.data.title.replace(/'/g, "\\'")}')`}
+                  class="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity"
+                  aria-label={`Reproducir ${item.data.title}`}
+                >
+                  <div class="bg-white/90 rounded-full p-4">
+                    <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                    </svg>
+                  </div>
+                </button>
+              )}
             </div>
-          )}
-        </div>
-
-        {/* Banner hero con imagen de fondo y título */}
-        <div class="relative rounded-xl overflow-hidden shadow-2xl mb-6 h-[100px] md:h-[120px]">
-          {concert.data.thumbnail && (
-            <>
-              <Picture 
-                src={concert.data.thumbnail}
-                alt={concert.data.title}
-                attributes={{
-                  img: {
-                    class: "absolute inset-0 w-full h-full object-cover"
-                  }
-                }}
-              />
-              <div class="absolute inset-0 bg-black/70"></div>
-            </>
-          )}
-          
-          <div class="relative z-10 h-full flex items-end p-4 md:p-5">
-            <div class="w-full">
-              <h2 class="text-xl md:text-2xl font-bold text-white leading-tight" style="text-shadow: 0 2px 10px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,0.8)">
-                {concert.data.title}
-              </h2>
-              {concert.data.location && (
-                <p class="text-xs md:text-sm text-white/90 flex items-center gap-1 mt-1" style="text-shadow: 0 2px 8px rgba(0,0,0,1)">
-                  <span>📍</span>
-                  <span>{concert.data.location}</span>
+            
+            {/* Contenido */}
+            <div class="p-4">
+              <h3 class="font-bold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                {item.data.title}
+              </h3>
+              
+              <div class="flex flex-col gap-1 text-sm text-gray-600 dark:text-gray-400">
+                <div class="flex items-center gap-2">
+                  <Icon name="news" class="w-4 h-4" />
+                  <time datetime={item.data.date.toISOString()}>
+                    {formatDate(item.data.date)}
+                  </time>
+                </div>
+                
+                {item.data.location && (
+                  <div class="flex items-center gap-2">
+                    <Icon name="map" class="w-4 h-4" />
+                    <span class="line-clamp-1">{item.data.location}</span>
+                  </div>
+                )}
+              </div>
+              
+              {item.data.description && (
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                  {item.data.description}
                 </p>
               )}
             </div>
-          </div>
-        </div>
-        
-        {concert.data.description && (
-          <div class="mb-6">
-            <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-3xl">
-              {concert.data.description}
-            </p>
-          </div>
-        )}
+          </article>
+        );
+      })}
+    </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {concert.data.videos.map((video, index) => {
-            const videoId = getYouTubeId(video.video_url);
-            if (!videoId) return null;
-            // Construir URL de miniatura - se intenta maxres y se hace fallback a hqdefault vía onerror
-            const maxRes = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-            const fallback = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-            return (
-              <div class="video-card group">
-                <button
-                  class="relative aspect-video rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-gray-900 w-full text-left"
-                  onclick={`openVideoModal('${videoId}', '${video.title.replace(/'/g, "\\'")}', ${index})`}
-                  aria-label={`Reproducir video: ${video.title}`}
-                >
-                  <img
-                    src={maxRes}
-                    alt={video.title}
-                    class="w-full h-full object-cover"
-                    loading="lazy"
-                    onerror={`this.onerror=null;this.src='${fallback}';`}
-                  />
-                  <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors duration-300 flex items-center justify-center">
-                    <div class="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 transform group-hover:scale-110 transition-transform duration-300 shadow-xl">
-                      <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                      </svg>
-                    </div>
-                  </div>
-                </button>
-                <div class="mt-3">
-                  <h3 class="font-semibold text-gray-900 dark:text-white text-lg">
-                    {video.title}
-                  </h3>
-                  {video.description && (
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      {video.description}
-                    </p>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </article>
-    ))}
-
-    {concerts.length === 0 && (
-      <div class="text-center py-20">
-        <Icon name="portfolio" class="w-20 h-20 mx-auto mb-4 text-gray-400" />
-        <p class="text-xl text-gray-600 dark:text-gray-400">
-          Todavía no hay videos en la galería.
-        </p>
-        <p class="text-gray-500 dark:text-gray-500 mt-2">
-          Agrega videos desde el CMS para que aparezcan aquí.
-        </p>
-      </div>
-    )}
-
-    <!-- CTA -->
+    {/* CTA Redes sociales */}
     <section class="text-center bg-primary text-white rounded-lg p-12 mt-20">
       <h2 class="text-3xl font-bold mb-4">¿Quieres ver más?</h2>
       <p class="text-xl mb-6">
@@ -221,8 +174,9 @@ const description = "Revive nuestros mejores momentos y conciertos";
         </a>
       </div>
     </section>
+
     <!-- Modal para reproducir videos -->
-  <div id="video-modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
+    <div id="video-modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
       <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeVideoModal()"></div>
       <div class="relative w-full max-w-4xl mx-auto">
         <div class="bg-neutral-900 rounded-lg overflow-hidden shadow-2xl">
@@ -237,6 +191,7 @@ const description = "Revive nuestros mejores momentos y conciertos";
       </div>
     </div>
   </div>
+
   <script>
     // Abre el modal e inyecta el iframe
     function openVideoModal(id, title) {
@@ -251,10 +206,10 @@ const description = "Revive nuestros mejores momentos y conciertos";
       modal.classList.remove('hidden');
       modal.classList.add('flex');
       document.body.classList.add('overflow-hidden');
-      // foco accesible
       const closeBtn = modal.querySelector('button[aria-label="Cerrar modal"]');
       (closeBtn as HTMLButtonElement | null)?.focus();
     }
+    
     // Cierra el modal y limpia el iframe para parar el video
     function closeVideoModal() {
       const modal = document.getElementById('video-modal');
@@ -265,6 +220,7 @@ const description = "Revive nuestros mejores momentos y conciertos";
       modal.classList.remove('flex');
       document.body.classList.remove('overflow-hidden');
     }
+    
     // Escape para cerrar
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeVideoModal();

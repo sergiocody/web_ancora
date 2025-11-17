@@ -659,18 +659,12 @@ const gallery = defineCollection({
 			.string()
 			.or(z.date())
 			.transform((val) => new Date(val)),
-		description: z.string().optional(),
-		thumbnail: z.string().optional(),
 		location: z.string().optional(),
-		event_type: z.string().optional(),
+		thumbnail: z.string().optional(),
+		media_type: z.enum(['video', 'photo']).default('photo'),
+		video_url: z.string().optional(),
+		description: z.string().optional(),
 		featured: z.boolean().default(false),
-		videos: z.array(
-			z.object({
-				title: z.string(),
-				video_url: z.string(),
-				description: z.string().optional(),
-			})
-		),
 	})
 })
 
