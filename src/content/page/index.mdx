@@ -112,14 +112,14 @@ blocks:
         <p class="mb-6 opacity-80">Recibe las noticias más destacadas y la información de próximos eventos</p>
 
         <form class="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-md mx-auto">
-          <input type="email" placeholder="Tu email" required class="flex-1 w-full sm:w-auto px-6 py-3 rounded-full bg-white dark:bg-slate-800 border-2 border-primary/30 focus:border-primary outline-none transition-all" />
-          <button type="submit" class="px-8 py-3 bg-primary text-white rounded-full font-semibold hover:bg-opacity-90 transition-all hover:scale-105">
+          <input type="email" placeholder="Tu email" required style="flex: 1; width: 100%; padding: 0.75rem 1.5rem; border-radius: 9999px; background-color: white; border: 2px solid rgba(var(--color-primary), 0.3); outline: none; transition: all 0.3s;" />
+          <button type="submit" style="padding: 0.75rem 2rem; background-color: var(--color-primary); color: white; border-radius: 9999px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; white-space: nowrap;">
             Suscribirme
           </button>
         </form>
       </div>
 
-      <div class="absolute inset-0 opacity-5 dark:opacity-10" style="background-image: url('/src/assets/solidarity.jpg'); background-size: cover; background-position: center; filter: blur(8px);"></div>
+      <div style="position: absolute; inset: 0; opacity: 0.05; background-image: url('/solidarity.jpg'); background-size: cover; background-position: center; filter: blur(8px); z-index: 0;"></div>
   - type: rich_text
     component: RichText
     container: sm
