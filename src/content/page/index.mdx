@@ -1,10 +1,12 @@
 ---
 title: Ancora Grupo Vocal
-description: "Voces que inspiran, música que une"
-intro: "Voces que inspiran, música que une"
+description: Voces que inspiran, música que une
+intro: Voces que inspiran, música que une
 hero_template: image
 template: full
 container: md
+pubDate: Jul 08 2022
+layout-hidden: blog
 hero_buttons:
   - component: Link
     label: Más información
@@ -19,128 +21,74 @@ hero_buttons:
     class: optional
     icon_only: false
     icon: /src/icons/annoncement-megaphone.svg
-pubDate: Jul 08 2022
-layout-hidden: blog
-
 blocks:
-  # ==========================================
-  # CARACTERÍSTICAS - Por qué somos especiales
-  # ==========================================
   - type: features
     component: Features
     container: lg
-    block_class: "py-20 text-center"
+    block_class: py-20 text-center
     surface: bg-slate-200 text-dark dark:bg-slate-900 dark:text-white
     content: |
       ## ¿Por Qué Somos Especiales?
-      
+
       Más de dos décadas compartiendo la pasión por la música coral
     features:
       - content: >
           ### 25 Años de Trayectoria
-          
+
           Desde 1998 compartiendo nuestra pasión por la música coral con cada concierto.
         icon: /src/icons/page.svg
         color: bg-blue-600 text-white
-      
       - content: >
           ### 40 Voces Talentosas
-          
+
           Miembros comprometidos con la excelencia musical y el trabajo en equipo.
         icon: /src/icons/page.svg
         color: bg-purple-600 text-white
-      
-      - content: >
+      - content: |
           ### Repertorio Variado
-          
           Del clásico al pop, pasando por góspel, jazz y música tradicional.
         icon: /src/icons/page.svg
         color: bg-indigo-600 text-white
-      
-      - content: >
+      - content: |
           ### +150 Conciertos
-          
           Actuaciones en toda España y giras internacionales por 10 países.
         icon: /src/icons/page.svg
         color: bg-amber-600 text-white
-      
       - content: >
           ### Premios Internacionales
-          
+
           Primer Premio en el Festival Internacional de Música Coral de Valencia 2023.
         icon: /src/icons/page.svg
         color: bg-green-600 text-white
-      
-      - content: >
+      - content: |
           ### Comunidad Musical
-          
           Más que una coral, somos una familia unida por el amor a la música.
         icon: /src/icons/page.svg
         color: bg-rose-600 text-white
-
-
-# ==========================================
-  # VIDEO DESTACADO
-  # ==========================================
-  - type: rich_text
-    component: RichText
-    container: lg
-    block_class: "py-20"
-    content: >
-      ## Escúchanos en Acción
-      
-      Disfruta de uno de nuestros conciertos más memorables
-      
-      
-      <div class="aspect-video rounded-lg overflow-hidden shadow-2xl mt-8">
-        <iframe 
-          width="100%" 
-          height="100%" 
-          src="https://www.youtube.com/embed/TU_VIDEO_ID" 
-          title="Video destacado de Ancora Grupo Vocal"
-          frameborder="0" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-          allowfullscreen
-          class="w-full h-full"
-        ></iframe>
-      </div>
-
-  # ==========================================
-
-# ==========================================
-  # PRÓXIMOS EVENTOS - Blog posts recientes
-  # ==========================================
   - type: recentitems
     component: RecentItems
     page_type: eventos
     count: 3
-    container: lg
-    template: grid
-    animate: true
-    block_class: "py-20 bg-slate-100 dark:bg-slate-900"
+    container: ""
+    template: column
+    animate: false
+    block_class: py-20 bg-slate-100 dark:bg-slate-900
     title: Conciertos y eventos
     content: >
-      Cada concierto es una experiencia única donde la música y la emoción se unen. Revisa nuestras actuaciones pasadas y no te pierdas nuestras próximas actuaciones y disfruta de momentos inolvidables con nosotros.
+      Cada concierto es una experiencia única donde la música y la emoción se
+      unen. Revisa nuestras actuaciones pasadas y no te pierdas nuestras
+      próximas actuaciones y disfruta de momentos inolvidables con nosotros.
     buttons:
       - icon_only: false
         label: Ver Todos los Eventos
         href: /eventos
         color: surface-primary
         icon: /src/icons/calendar.svg
-
-
-
-  # ==========================================
-
-
-
-  
   - type: rich_text
     component: RichText
     container: sm
-    content: >
+    content: |
       ## Nuestros Miembros
-
 
       Conoce a las personas que dan vida a nuestra música coral.
     buttons:
@@ -150,7 +98,8 @@ blocks:
         color: surface-primary
         icon: /src/icons/portfolio.svg
     block_class: py-20 text-center
-  
+    count: 5
+    page_type: ""
 style:
   hero_template: image
   template: full
@@ -161,5 +110,5 @@ style:
   hero_surface: surface-dark
   hero_image_opacity: ""
 thumbnail: /src/assets/pentagrama.jpg
-og_image: /src/assets/og_image_nebulix.png
+og_image: /src/assets/sopranos.jpeg
 ---
