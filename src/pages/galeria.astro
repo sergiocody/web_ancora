@@ -69,11 +69,11 @@ const description = "Nuestros mejores momentos en fotos y videos";
           <article class="group relative bg-white dark:bg-slate-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
             {/* Imagen/Thumbnail - Ahora todo es clicable */}
             <button
-              onclick={isVideo && videoId 
-                ? `openVideoModal('${videoId}', '${item.data.title.replace(/'/g, "\\'")}')`
-                : `openImageModal('${thumbnail}', '${item.data.title.replace(/'/g, "\\'")}')`
-              }
-              class="relative aspect-video overflow-hidden bg-slate-200 dark:bg-slate-700 w-full cursor-pointer"
+              data-video-id={isVideo && videoId ? videoId : null}
+              data-image-src={!isVideo ? thumbnail : null}
+              data-title={item.data.title}
+              data-type={isVideo ? 'video' : 'photo'}
+              class="gallery-item relative aspect-video overflow-hidden bg-slate-200 dark:bg-slate-700 w-full cursor-pointer"
             >
               {item.data.thumbnail ? (
                 <Picture
@@ -183,12 +183,12 @@ const description = "Nuestros mejores momentos en fotos y videos";
 
     <!-- Modal para reproducir videos -->
     <div id="video-modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
-      <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeVideoModal()"></div>
+      <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" id="video-modal-backdrop"></div>
       <div class="relative w-full max-w-4xl mx-auto">
         <div class="bg-neutral-900 rounded-lg overflow-hidden shadow-2xl">
           <div class="flex items-center justify-between px-4 py-3 border-b border-neutral-700">
             <h3 class="text-lg font-semibold text-white" data-title>Reproduciendo</h3>
-            <button class="text-neutral-300 hover:text-white transition" onclick="closeVideoModal()" aria-label="Cerrar modal">
+            <button class="text-neutral-300 hover:text-white transition" id="close-video-modal" aria-label="Cerrar modal">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
           </div>
@@ -199,10 +199,10 @@ const description = "Nuestros mejores momentos en fotos y videos";
 
     <!-- Modal para ver imágenes -->
     <div id="image-modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
-      <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeImageModal()"></div>
+      <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" id="image-modal-backdrop"></div>
       <div class="relative w-full max-w-6xl mx-auto">
         <div class="relative">
-          <button class="absolute -top-12 right-0 text-white hover:text-gray-300 transition" onclick="closeImageModal()" aria-label="Cerrar modal">
+          <button class="absolute -top-12 right-0 text-white hover:text-gray-300 transition" id="close-image-modal" aria-label="Cerrar modal">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
           <img data-image-src="" alt="" class="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl" />
@@ -212,26 +212,23 @@ const description = "Nuestros mejores momentos en fotos y videos";
     </div>
   </div>
 
-  <script>
-    // Abre el modal de video e inyecta el iframe
-    function openVideoModal(id: string, title: string) {
+  <script is:inline>
+    // Funciones globales para los modales
+    window.openVideoModal = function(id, title) {
       const modal = document.getElementById('video-modal');
       if (!modal) return;
       const frame = modal.querySelector('[data-frame]');
       const titleEl = modal.querySelector('[data-title]');
       if (titleEl) titleEl.textContent = title;
       if (frame) {
-        frame.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${id}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="${title.replace(/"/g,'&quot;')}"></iframe>`;
+        frame.innerHTML = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/' + id + '?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="' + title.replace(/"/g,'&quot;') + '"></iframe>';
       }
       modal.classList.remove('hidden');
       modal.classList.add('flex');
       document.body.classList.add('overflow-hidden');
-      const closeBtn = modal.querySelector('button[aria-label="Cerrar modal"]');
-      (closeBtn as HTMLButtonElement | null)?.focus();
-    }
+    };
     
-    // Cierra el modal de video y limpia el iframe
-    function closeVideoModal() {
+    window.closeVideoModal = function() {
       const modal = document.getElementById('video-modal');
       if (!modal) return;
       const frame = modal.querySelector('[data-frame]');
@@ -239,13 +236,12 @@ const description = "Nuestros mejores momentos en fotos y videos";
       modal.classList.add('hidden');
       modal.classList.remove('flex');
       document.body.classList.remove('overflow-hidden');
-    }
+    };
 
-    // Abre el modal de imagen
-    function openImageModal(src: string, title: string) {
+    window.openImageModal = function(src, title) {
       const modal = document.getElementById('image-modal');
       if (!modal) return;
-      const img = modal.querySelector('[data-image-src]') as HTMLImageElement;
+      const img = modal.querySelector('[data-image-src]');
       const titleEl = modal.querySelector('[data-image-title]');
       if (img) {
         img.src = src;
@@ -255,23 +251,63 @@ const description = "Nuestros mejores momentos en fotos y videos";
       modal.classList.remove('hidden');
       modal.classList.add('flex');
       document.body.classList.add('overflow-hidden');
-    }
+    };
 
-    // Cierra el modal de imagen
-    function closeImageModal() {
+    window.closeImageModal = function() {
       const modal = document.getElementById('image-modal');
       if (!modal) return;
       modal.classList.add('hidden');
       modal.classList.remove('flex');
       document.body.classList.remove('overflow-hidden');
-    }
-    
-    // Escape para cerrar ambos modales
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeVideoModal();
-        closeImageModal();
+    };
+
+    // Event listeners cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', function() {
+      // Clicks en items de galería
+      document.querySelectorAll('.gallery-item').forEach(function(item) {
+        item.addEventListener('click', function() {
+          const type = this.getAttribute('data-type');
+          const title = this.getAttribute('data-title');
+          
+          if (type === 'video') {
+            const videoId = this.getAttribute('data-video-id');
+            if (videoId) window.openVideoModal(videoId, title);
+          } else {
+            const imageSrc = this.getAttribute('data-image-src');
+            if (imageSrc) window.openImageModal(imageSrc, title);
+          }
+        });
+      });
+
+      // Cerrar modales con clicks en backdrop
+      const videoBackdrop = document.getElementById('video-modal-backdrop');
+      if (videoBackdrop) {
+        videoBackdrop.addEventListener('click', window.closeVideoModal);
       }
+
+      const imageBackdrop = document.getElementById('image-modal-backdrop');
+      if (imageBackdrop) {
+        imageBackdrop.addEventListener('click', window.closeImageModal);
+      }
+
+      // Botones de cerrar
+      const closeVideoBtn = document.getElementById('close-video-modal');
+      if (closeVideoBtn) {
+        closeVideoBtn.addEventListener('click', window.closeVideoModal);
+      }
+
+      const closeImageBtn = document.getElementById('close-image-modal');
+      if (closeImageBtn) {
+        closeImageBtn.addEventListener('click', window.closeImageModal);
+      }
+
+      // ESC para cerrar
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          window.closeVideoModal();
+          window.closeImageModal();
+        }
+      });
     });
   </script>
 </BaseLayout>
