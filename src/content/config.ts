@@ -462,6 +462,7 @@ const page = defineCollection({
 		template: z.string().optional(),
 		container: z.string().optional(),
 		hero_template: z.string().optional(),
+		hero_logo: z.string().optional(),
 
 		hero_buttons: z
 			.array(
