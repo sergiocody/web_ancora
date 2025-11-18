@@ -82,8 +82,8 @@ const { slug } = Astro.params;
         }
         {
           hero_logo && hero_logo.length > 0 ? (
-            <div class="mb-4">
-              <img src={hero_logo} alt={title} class="mx-auto max-w-lg w-full h-auto drop-shadow-2xl" />
+            <div class="my-8">
+              <img src={hero_logo} alt={title} class="mx-auto w-full max-w-2xl h-auto" style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));" />
             </div>
           ) : (
             <h1 class="title">
@@ -91,7 +91,7 @@ const { slug } = Astro.params;
             </h1>
           )
         }
-        {intro && <div class="subtitle balance py2"> {intro}</div>}
+        {intro && !hero_logo && <div class="subtitle balance py2"> {intro}</div>}
 
         {
           tag && (
