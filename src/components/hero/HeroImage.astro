@@ -82,8 +82,8 @@ const { slug } = Astro.params;
         }
         {
           hero_logo && hero_logo.length > 0 ? (
-            <div class="my-8">
-              <img src={hero_logo} alt={title} class="mx-auto w-full max-w-2xl h-auto" style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));" />
+            <div class="my-8 text-left">
+              <img src={hero_logo} alt={title} class="max-w-2xl h-auto" style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));" />
             </div>
           ) : (
             <h1 class="title">
