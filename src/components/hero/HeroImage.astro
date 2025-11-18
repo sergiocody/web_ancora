@@ -8,6 +8,7 @@ const {
   title,
   thumbnail,
   hero_buttons,
+  hero_logo,
   intro,
   tag,
   filter,
@@ -79,9 +80,15 @@ const { slug } = Astro.params;
             </span>
           )
         }
-        <h1 class="title">
-          {title}
-        </h1>
+        {
+          hero_logo ? (
+            <img src={hero_logo} alt={title} class="mx-auto max-w-md w-full h-auto" />
+          ) : (
+            <h1 class="title">
+              {title}
+            </h1>
+          )
+        }
         {intro && <div class="subtitle balance py2"> {intro}</div>}
 
         {
