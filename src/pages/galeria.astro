@@ -262,7 +262,8 @@ const description = "Nuestros mejores momentos en fotos y videos";
     };
 
     // Event listeners cuando el DOM esté listo
-    document.addEventListener('DOMContentLoaded', function() {
+    // Event listeners cuando el DOM esté listo (compatible con View Transitions)
+    document.addEventListener('astro:page-load', function() {
       // Clicks en items de galería
       document.querySelectorAll('.gallery-item').forEach(function(item) {
         item.addEventListener('click', function() {
