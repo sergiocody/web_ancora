@@ -201,12 +201,16 @@ const description = "Nuestros mejores momentos en fotos y videos";
     <div id="image-modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
       <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" id="image-modal-backdrop"></div>
       <div class="relative w-full max-w-6xl mx-auto">
-        <div class="relative">
-          <button class="absolute -top-12 right-0 text-white hover:text-gray-300 transition" id="close-image-modal" aria-label="Cerrar modal">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-          </button>
-          <img data-image-src="" alt="" class="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl" />
-          <p class="text-white text-center mt-4 text-lg" data-image-title></p>
+        <div class="bg-neutral-900 rounded-lg overflow-hidden shadow-2xl">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-neutral-700">
+            <h3 class="text-lg font-semibold text-white" data-image-title></h3>
+            <button class="text-neutral-300 hover:text-white transition" id="close-image-modal" aria-label="Cerrar modal">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+          <div class="relative bg-black flex justify-center items-center p-1 sm:p-4">
+            <img data-image-src="" alt="" class="max-w-full max-h-[85vh] object-contain rounded-sm" />
+          </div>
         </div>
       </div>
     </div>
