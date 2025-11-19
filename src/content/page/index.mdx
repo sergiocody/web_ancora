@@ -29,10 +29,30 @@ blocks:
     block_class: py-20
     surface: bg-gradient-to-br from-primary/5 via-white to-slate-50 dark:from-primary/10 dark:via-slate-900 dark:to-slate-800
     content: >
-      <section class="relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-primary/15 bg-white/95 p-4 sm:p-6 md:p-10 text-slate-700 shadow-2xl shadow-primary/10 backdrop-blur-md dark:border-primary/30 dark:bg-slate-900/80 dark:text-slate-100" style="font-family: 'Noto Serif Display', serif;"><div class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-primary/10 via-transparent to-amber-100/40 dark:from-primary/20 dark:via-transparent dark:to-primary/5"></div><div class="pointer-events-none absolute -left-12 top-12 h-40 w-40 rounded-full bg-primary/15 blur-3xl dark:bg-primary/25"></div>
-      <div class="pointer-events-none absolute -bottom-16 right-0 h-48 w-48 rounded-full bg-pink-200/30 blur-3xl dark:bg-pink-400/20"></div>
-      <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary/80 dark:bg-primary/20 dark:text-primary/90">tradición · renovación · comunidad</span><h3 class="mt-6 text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">Quienes somos</h3><div class="mt-8 grid gap-4 sm:gap-6 text-left text-base sm:text-lg md:text-xl leading-relaxed text-slate-600 dark:text-slate-300"><div class="rounded-2xl border border-slate-200/40 bg-white/80 p-4 sm:p-6 shadow-sm shadow-primary/5 transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 dark:border-white/10 dark:bg-white/[0.04]">Somos un coro que une <span class="text-primary font-semibold">tradición y renovación</span>. Nacidos de una larga trayectoria coral que se remonta a décadas atrás, hemos decidido iniciar una nueva etapa manteniendo intacta nuestra pasión por la música vocal.</div>
-      <div class="rounded-2xl border border-slate-200/40 bg-white/80 p-4 sm:p-6 shadow-sm shadow-primary/5 transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 dark:border-white/10 dark:bg-white/[0.04]">Bajo la dirección de <a href="/miembros/director/" class="relative font-semibold text-primary underline decoration-primary/40 decoration-2 underline-offset-4 transition-colors duration-300 hover:text-primary/90">Rubén Larrea</a>, maestro de reconocido prestigio internacional, casi cincuenta voces se unen para explorar un repertorio que abarca desde la polifonía renacentista hasta la música contemporánea, pasando por las grandes obras corales y la música popular de raíz.</div><div class="rounded-2xl border border-slate-200/40 bg-white/80 p-4 sm:p-6 shadow-sm shadow-primary/5 transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 dark:border-white/10 dark:bg-white/[0.04]">Nuestra fuerza reside en la experiencia acumulada en cientos de conciertos y la ilusión renovada de cada ensayo. Porque para nosotros, <span class="text-primary font-semibold">cantar juntos es construir comunidad, emocionar y compartir la belleza de la música coral</span>.</div></div></section>
+      <div class="mx-auto max-w-5xl text-center">
+        <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary/80 dark:bg-primary/20 dark:text-primary/90">tradición · renovación · comunidad</span>
+        <h3 class="mt-6 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Quienes somos</h3>
+      </div>
+
+      <div class="mt-12 grid gap-8 md:grid-cols-3 text-left">
+        <div class="relative p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
+          <div class="text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+            Somos un coro que une <span class="text-primary font-semibold">tradición y renovación</span>. Nacidos de una larga trayectoria coral que se remonta a décadas atrás, hemos decidido iniciar una nueva etapa manteniendo intacta nuestra pasión por la música vocal.
+          </div>
+        </div>
+
+        <div class="relative p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
+          <div class="text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+            Bajo la dirección de <a href="/miembros/director/" class="font-semibold text-primary hover:underline decoration-2 underline-offset-2 transition-all">Rubén Larrea</a>, maestro de reconocido prestigio internacional, casi cincuenta voces se unen para explorar un repertorio que abarca desde la polifonía renacentista hasta la música contemporánea.
+          </div>
+        </div>
+
+        <div class="relative p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
+          <div class="text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+            Nuestra fuerza reside en la experiencia acumulada y la ilusión de cada ensayo. Porque para nosotros, <span class="text-primary font-semibold">cantar juntos es construir comunidad, emocionar y compartir la belleza de la música coral</span>.
+          </div>
+        </div>
+      </div>
   - type: recentitems
     component: RecentItems
     page_type: eventos
