@@ -21,6 +21,7 @@ const {
   filter,
   filter_type,
   hero_buttons,
+  hide_filters,
 } = Astro.props;
 
 const { slug } = Astro.params;
@@ -105,7 +106,7 @@ const hasBlocks = blocks && blocks.length > 0;
             }
 
             {
-              filters && (
+              filters && !hide_filters && (
                 <ItemFilter
                   filters={filters}
                   className="mt-4"
