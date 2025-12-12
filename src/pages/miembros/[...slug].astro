@@ -7,6 +7,7 @@ import Breadcrumb from "@components/navigation/Breadcrumb.astro";
 import ItemNav from "@components/navigation/ItemNav.astro";
 import PageLayoutSplit from "@layouts/PageLayoutSplit.astro";
 import PageLayoutWide from "@layouts/PageLayoutWide.astro";
+import MembersInline from "@components/block/MembersInline.astro";
 import { t } from "@util/translate";
 export async function getStaticPaths() {
   const posts = (await getCollection("miembros")).sort(
@@ -103,6 +104,11 @@ const filter = post.data?.tag
       <div class="richtext">
         <Content />
       </div>
+      
+      {post.data.members && post.data.members.length > 0 && (
+        <MembersInline members={post.data.members} />
+      )}
+      
       {post.data.features && (
         <div class="pt-auto flex h-full max-w-md content-end py-8 ">
           <div class="sticky bottom-8 self-end">

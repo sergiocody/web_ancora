@@ -86,6 +86,36 @@ export const project = {
         },
       ],
     },
+    {
+      name: "members",
+      label: "Miembros",
+      label_singular: "Miembro",
+      widget: "list",
+      min: 0,
+      collapsed: true,
+      summary: "{{fields.name}}",
+      required: false,
+      fields: [
+        {
+          name: "name",
+          label: "Nombre",
+          widget: "string",
+          required: true,
+        },
+        {
+          name: "photo",
+          label: "Foto",
+          widget: "image",
+          required: true,
+        },
+        {
+          name: "role",
+          label: "Rol/Voz",
+          widget: "string",
+          required: false,
+        },
+      ],
+    },
     blocks,
     style,
     {
