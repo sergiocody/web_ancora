@@ -193,6 +193,15 @@ const miembros = defineCollection({
 				})
 			)
 			.optional(),
+		members: z
+			.array(
+				z.object({
+					name: z.string(),
+					photo: z.string(),
+					role: z.string().optional()
+				})
+			)
+			.optional(),
 		hero_buttons: z
 			.array(
 				z.object({
