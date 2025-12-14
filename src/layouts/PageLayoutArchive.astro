@@ -52,7 +52,12 @@ const productWrapClass = () => {
         {page.data.map((post) => (
           <li>
             <Intersecting client:visible>
-              <ItemCardSmall content={post} {base_url} animate={true} />
+              <ItemCardSmall
+                content={post}
+                {base_url}
+                animate={true}
+                {tag_links}
+              />
             </Intersecting>
           </li>
         ))}
@@ -98,10 +103,21 @@ const productWrapClass = () => {
             <li>
               <Intersecting client:visible>
                 {style.card_template === "grid" && (
-                  <ItemCard content={post} {base_url} {sizes} animate={true} />
+                  <ItemCard
+                    content={post}
+                    {base_url}
+                    {sizes}
+                    animate={true}
+                    {tag_links}
+                  />
                 )}
                 {style.card_template === "flex" && (
-                  <ItemCardFlex content={post} {base_url} animate={true} />
+                  <ItemCardFlex
+                    content={post}
+                    {base_url}
+                    animate={true}
+                    {tag_links}
+                  />
                 )}
               </Intersecting>
             </li>
