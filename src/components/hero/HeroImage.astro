@@ -17,6 +17,7 @@ const {
   style,
   pubDate,
   base_url,
+  tag_links = true,
 } = Astro.props;
 
 const { slug } = Astro.params;
@@ -98,7 +99,7 @@ const { slug } = Astro.params;
             <ItemFilter
               filters={tag}
               className="mt-4 justify-start"
-              links={true}
+              links={tag_links}
               {base_url}
             />
           )

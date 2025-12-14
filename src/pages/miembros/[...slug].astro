@@ -65,7 +65,7 @@ const filter = post.data?.tag
 
 {
   post.data.style.template === "full" && (
-    <PageLayoutWide {...post.data} {base_url}>
+    <PageLayoutWide {...post.data} {base_url} tag_links={false}>
       <div class="richtext no-lead">
         <Content />
       </div>
@@ -97,7 +97,7 @@ const filter = post.data?.tag
 }
 {
   post.data.style.template === "split" && (
-    <PageLayoutSplit {...post.data} {base_url}>
+    <PageLayoutSplit {...post.data} {base_url} tag_links={false}>
 
       <div class="richtext no-lead">
         <Content />

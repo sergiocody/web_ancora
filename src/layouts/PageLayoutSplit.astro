@@ -22,6 +22,7 @@ const {
   filter_type,
   hero_buttons,
   hide_filters,
+  tag_links = true,
 } = Astro.props;
 
 const { slug } = Astro.params;
@@ -99,7 +100,7 @@ const hasBlocks = blocks && blocks.length > 0;
                 <ItemFilter
                   filters={tag}
                   className="mt-4"
-                  links={true}
+                  links={tag_links}
                   {base_url}
                 />
               )

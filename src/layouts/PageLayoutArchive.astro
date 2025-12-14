@@ -10,7 +10,7 @@ import ItemCardFlex from "@components/cards/ItemCardFlex.astro";
 import ItemCardSmall from "@components/cards/ItemCardSmall.astro";
 import { slugify } from "@util/helpers";
 
-const { data, page, filters, base_url, filter, filter_type, tag } = Astro.props;
+const { data, page, filters, base_url, filter, filter_type, tag, tag_links = true } = Astro.props;
 const style = data?.style ? data.style : page.data.style;
 const sizes = getGridImageSizes(data?.style?.container || "md");
 const template = style?.template ? data.style.template : "split";
@@ -39,6 +39,7 @@ const productWrapClass = () => {
       {filter}
       {filter_type}
       {tag}
+      {tag_links}
       hide_filters={data.hide_filters}
     >
       {data.body && data.body !== " " && (
@@ -79,6 +80,7 @@ const productWrapClass = () => {
       {filter}
       {filter_type}
       {base_url}
+      {tag_links}
       {tag}
     >
       {data.body && data.body !== "" && (

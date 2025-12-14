@@ -23,4 +23,4 @@ const { data } = await getEntry("config", "miembros");
 const filters = data.project_tags ? data.project_tags.map((t) => t.name) : [];
 ---
 
-<PageLayoutArchive {page} {filters} {data} {base_url} />
+<PageLayoutArchive {page} {filters} {data} {base_url} tag_links={false} />
