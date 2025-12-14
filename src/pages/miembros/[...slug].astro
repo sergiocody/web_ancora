@@ -66,7 +66,6 @@ const filter = post.data?.tag
 {
   post.data.style.template === "full" && (
     <PageLayoutWide {...post.data} {base_url}>
-      <Breadcrumb title={post.data.title} filter={filter} />
       <div class="richtext no-lead">
         <Content />
       </div>
@@ -100,7 +99,6 @@ const filter = post.data?.tag
   post.data.style.template === "split" && (
     <PageLayoutSplit {...post.data} {base_url}>
       <Breadcrumb title={post.data.title} filter={filter} />
-
       <div class="richtext no-lead">
         <Content />
       </div>
