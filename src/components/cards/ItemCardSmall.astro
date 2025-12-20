@@ -10,7 +10,8 @@ const cardAnimation = `card_${animate ? content.slug : Math.random()}`;
 
 // Detectar si es un evento futuro
 const now = new Date();
-const isFutureEvent = content.data.pubDate && new Date(content.data.pubDate) > now;
+const eventDate = content.data.eventDate || content.data.pubDate;
+const isFutureEvent = eventDate && new Date(eventDate) > now;
 ---
 
 <a
@@ -20,10 +21,10 @@ const isFutureEvent = content.data.pubDate && new Date(content.data.pubDate) > n
 >
   <div class="opacity-100 group-hover:opacity-100">
     {
-      content.data.pubDate && (
+      eventDate && (
         <div class="flex items-center gap-2">
           <span class="text-overline text-xs">
-            <FormattedDate date={content.data.pubDate} />
+            <FormattedDate date={eventDate} />
           </span>
           {isFutureEvent && (
             <span class="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-white">

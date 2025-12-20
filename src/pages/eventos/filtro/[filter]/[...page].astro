@@ -11,13 +11,27 @@ export async function getStaticPaths({ paginate }) {
 
   // Filtrar eventos próximos (fecha futura o igual a hoy)
   const proximosPosts = allPosts
-    .filter((post) => post.data.pubDate >= now)
-    .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+    .filter((post) => {
+      const eventDate = post.data.eventDate || post.data.pubDate;
+      return eventDate && new Date(eventDate) >= now;
+    })
+    .sort((a, b) => {
+      const aDate = a.data.eventDate || a.data.pubDate;
+      const bDate = b.data.eventDate || b.data.pubDate;
+      return aDate.valueOf() - bDate.valueOf();
+    });
 
   // Filtrar eventos pasados (fecha anterior a hoy)
   const pasadosPosts = allPosts
-    .filter((post) => post.data.pubDate < now)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+    .filter((post) => {
+      const eventDate = post.data.eventDate || post.data.pubDate;
+      return !eventDate || new Date(eventDate) < now;
+    })
+    .sort((a, b) => {
+      const aDate = a.data.eventDate || a.data.pubDate;
+      const bDate = b.data.eventDate || b.data.pubDate;
+      return bDate.valueOf() - aDate.valueOf();
+    });
 
   return [
     ...paginate(proximosPosts, {
