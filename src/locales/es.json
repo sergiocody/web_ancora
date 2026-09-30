@@ -98,6 +98,7 @@
   "name": "Nombre",
   "navigation": "Navegación",
   "next": "Siguiente",
+  "no_upcoming_events": "No hay eventos programados por ahora. Consulta el archivo para revivir nuestras últimas actuaciones.",
   "not_used_by_banner_template": "No utilizado por la plantilla de banner",
   "number_of_items": "Número de artículos",
   "offer": "Oferta",

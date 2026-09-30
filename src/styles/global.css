@@ -250,26 +250,27 @@ h1, h2, h3, h4, h5, h6 {
       background-position-x: left;
     }
   }
+  /* Only style bare markdown output so utility classes in HTML content win. */
   &:not(.dense) {
-    * + p {
+    * + p:not([class]) {
       @apply pt-4;
     }
   }
 
-  p {
+  p:not([class]) {
     @apply text-lg;
   }
   &:not(.no-lead) {
-    p:first-of-type {
+    p:not([class]):first-of-type {
       @apply text-xl;
     }
   }
 
-  * + *:is(h2, h3, h4, h5, h6) {
+  * + *:is(h2, h3, h4, h5, h6):not([class]) {
     @apply pt-8;
   }
 
-  h2 {
+  h2:not([class]) {
     @apply text-3xl font-extrabold sm:text-4xl;
     text-wrap: balance;
     strong {
@@ -277,20 +278,20 @@ h1, h2, h3, h4, h5, h6 {
     }
   }
 
-  h3 {
+  h3:not([class]) {
     @apply text-2xl font-extrabold sm:text-3xl;
     text-wrap: balance;
   }
-  h4 {
+  h4:not([class]) {
     @apply text-xl font-bold sm:text-2xl;
     text-wrap: balance;
   }
-  h5 {
+  h5:not([class]) {
     @apply text-lg font-bold leading-none sm:text-xl;
     text-wrap: balance;
   }
 
-  h6 {
+  h6:not([class]) {
     @apply text-lg font-bold leading-none;
     text-wrap: balance;
   }
@@ -371,10 +372,24 @@ h1, h2, h3, h4, h5, h6 {
   @apply text-lg;
 }
 
+.eyebrow {
+  @apply text-xs font-semibold uppercase tracking-[0.2em] text-primary;
+}
+
+.text-muted {
+  @apply text-slate-600 dark:text-slate-400;
+}
+
+/* CARDS */
+
+.card {
+  @apply rounded-xl border border-slate-200/80 bg-white shadow-sm dark:border-white/10 dark:bg-white/5;
+}
+
 /* BUTTONS */
 
 .btn {
-  @apply inline-flex gap-2 rounded-full px-4 py-2 uppercase outline-offset-4 transition-all duration-300 hover:-translate-y-0.5  hover:bg-opacity-90 hover:shadow-md disabled:pointer-events-none disabled:opacity-50 disabled:grayscale;
+  @apply inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold uppercase tracking-wide outline-offset-4 transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-opacity-90 hover:shadow-md disabled:pointer-events-none disabled:opacity-50 disabled:grayscale;
 
   &-icon {
     @apply px-2;

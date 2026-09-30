@@ -115,50 +115,46 @@ const sizes = getGridImageSizes(container);
 
     {
       template === "list" && (
-        <div class="grid gap-14 md:grid-cols-2">
-          <div>
+        <div class="grid gap-8 md:grid-cols-5 md:gap-12">
+          <div class="md:col-span-2">
             <div class="sticky top-8 grid gap-4">
               <h2 class="title-sm" id={slugify(title)}>
                 {title}
               </h2>
               {content && (
-                <div class="richtext" set:html={marked.parse(content)} />
+                <div
+                  class="richtext no-lead text-muted"
+                  set:html={marked.parse(content)}
+                />
               )}
             </div>
           </div>
-          <ul class={`bloglist grid gap-4`} data-pagefind-ignore="all">
-            {posts.map((post, index) => (
-              <li style={`--animation-delay: ${(index + 1) * 150}ms`}>
-                <ItemCardSmall content={post} base_url={base_url} {animate} />
-              </li>
-            ))}
-            <li class="fade-up flex justify-end">
-              <a
-                href={`/${base_url}`}
-                aria-label={t("show_more")}
-                class=" btn btn-icon surface-primary mr-2"
-              >
+          <div class="grid content-start gap-6 md:col-span-3">
+            {posts?.length > 0 ? (
+              <ul class="bloglist grid gap-4" data-pagefind-ignore="all">
+                {posts.map((post, index) => (
+                  <li style={`--animation-delay: ${(index + 1) * 150}ms`}>
+                    <ItemCardSmall content={post} base_url={base_url} {animate} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="card text-muted fade-up p-6 text-base leading-relaxed sm:p-8">
+                {t("no_upcoming_events")}
+              </p>
+            )}
+            <div class="fade-up flex justify-end">
+              <a href={`/${base_url}`} class="btn surface-primary group">
+                <span>{t("show_more")}</span>
                 <Icon
                   name="right"
-                  class="w-6 transition-transform duration-500 group-hover:scale-110"
+                  class="w-5 transition-transform duration-200 ease-in-out group-hover:translate-x-0.5"
                 />
               </a>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       )
     }
   </div>
 </Intersecting>
-
-<style lang="postcss">
-.recent-blogs ul.bloglist {
-		width: calc(100% + var(--container-spacing));
-		margin-left: calc(var(--spacing) * -1);
-		
-		@screen md {  
-			width: 100%;
-			margin-left: 0;                      
-		}
-	}
-</style>

@@ -1,0 +1,10 @@
+# Sistema de Diseño y Refinamiento Estético
+
+## Principios Visuales
+- **Espaciado y Aire:** Aplica una escala basada en 8px (8px, 16px, 24px, 32px, 48px). Prohibido usar márgenes y paddings inconsistentes.
+- **Jerarquía Tipográfica:** Mantén un contraste claro entre títulos, subtítulos y cuerpo mediante peso (`font-weight`), tamaño y opacidad/color.
+- **Sombra y Profundidad:** Utiliza capas suaves de sombra (`box-shadow` o clases equivalentes) para separar tarjetas e interactivos del fondo. Evita bordes negros pesados.
+
+## Bordes y Geometría
+- Aplica un radio de borde consistente en tarjetas, contenedores e interactivos (`rounded-lg` o `8px` - `12px`).
+- Transiciones fluidas en estados interactivos: `transition: all 0.2s ease-in-out`.
