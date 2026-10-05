@@ -15,28 +15,35 @@ const isActive = (href) => {
   if (currentPath === "" && href == "/") return true;
   if (currentPath !== "" && href.startsWith(`/${currentPath}`)) return true;
 };
+const isHome = currentPath === "";
 ---
 
-<header class="surface-menu nav sticky top-0 z-50" transition:name="nav">
+<header
+  class={`surface-menu nav top-0 z-50 ${isHome ? "nav--overlay fixed inset-x-0" : "sticky"}`}
+>
   <nav class="container-xl flex flex-nowrap items-stretch gap-6">
     <a
       href="/"
       aria-label={title}
       class="grid place-items-center py-3"
-      ><img src={logo.src} alt={title} class="h-10" /></a
+      ><img
+        src={logo.src}
+        alt={title}
+        class={`h-10 ${isHome ? "brightness-0 invert xl:h-12" : "dark:brightness-0 dark:invert"}`}
+      /></a
     >
     {
       menu && (
-        <ul class="nav-underline nav-links relative hidden flex-nowrap pl-4 uppercase tracking-wide before:absolute before:inset-y-4 before:left-0 before:border-l-2 before:border-primary before:border-opacity-50 md:flex ">
+        <ul class="nav-underline nav-links relative hidden flex-nowrap items-center whitespace-nowrap pl-4 font-heading text-sm uppercase tracking-[0.14em] before:absolute before:inset-y-4 before:left-0 before:border-l before:border-current before:opacity-30 xl:flex">
           {menu.map((link) => (
             <li class={`${
               link.special 
                 ? 'special-menu-item' 
                 : ''
-            } ${isActive(link.href) ? "active font-semibold" : ""}`}>
+            } ${isActive(link.href) ? "active" : ""}`}>
               <a href={link.href} class={`block py-3 ${
                 link.special 
-                  ? 'text-primary font-bold relative' 
+                  ? 'font-bold relative' 
                   : ''
               }`}>
                 {link.label}
@@ -49,7 +56,7 @@ const isActive = (href) => {
 
     {
       (
-        <ul class="nav-underline relative -mr-4  ml-auto flex flex-nowrap justify-end pl-4 uppercase md:mr-0">
+        <ul class="nav-underline relative -mr-4  ml-auto flex flex-nowrap justify-end pl-4 uppercase xl:mr-0">
           <li>
             <CartButton
               label={t("cart")}
@@ -66,7 +73,7 @@ const isActive = (href) => {
 
           {social &&
             social.slice(0, 3).map((link) => (
-              <li class="hidden md:block">
+              <li class="hidden 2xl:block">
                 <a
                   href={link.href}
                   class="grid h-full place-items-center"
@@ -82,7 +89,7 @@ const isActive = (href) => {
             <ColorSwitch client:idle />
           </li>
 
-          <li class="md:hidden">
+          <li class="xl:hidden">
             <NavMobile
               client:idle
               translations={{ menu: t("menu"), close: t("close") }}
@@ -148,56 +155,118 @@ const isActive = (href) => {
 </header>
 <style>
   .nav {
-    @apply transition-transform duration-500;
+    --nav-accent: var(--color-primary);
+    transition:
+      transform 0.5s ease-in-out,
+      color 0.2s ease-in-out;
+
+    /* Glass on a pseudo-element: a filter on the header would trap the fixed mobile menu; view-transition-name would kill the blur */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: rgb(var(--color-light) / 0.75);
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      border-bottom: 1px solid rgb(0 0 0 / 0.06);
+      box-shadow: 0 8px 32px rgb(0 0 0 / 0.08);
+      transition: opacity 0.3s ease-in-out;
+    }
+
     ul {
       --_gap: 1rem;
     }
     .nav-underline li:not(ul li ul li) {
       @apply relative overflow-hidden;
+      isolation: isolate;
       padding: calc(var(--_gap) / 2);
       min-inline-size: 1.3rem;
 
       &::after {
-        @apply absolute rounded-full bg-primary;
+        @apply absolute rounded-full;
         content: "";
-        inset-inline: 0;
-        inset-block-end: 0;
-        block-size: 5px;
+        inset-inline: 0.5rem;
+        inset-block-end: 0.375rem;
+        block-size: 3px;
+        background: linear-gradient(
+          90deg,
+          rgb(var(--nav-accent) / 0.4),
+          rgb(var(--nav-accent)),
+          rgb(var(--nav-accent) / 0.4)
+        );
+        box-shadow: 0 0 12px rgb(var(--nav-accent) / 0.7);
 
         translate: var(--_translate, 0);
         scale: var(--_scale, 0) 1;
         transition:
-          scale 100ms var(--_scale-delay, 0ms),
-          translate 200ms,
-          color 200ms;
+          scale 150ms var(--_scale-delay, 0ms),
+          translate 200ms ease-in-out;
       }
       &:hover ~ li {
         --_translate: -100%;
         --_scale-delay: 200ms;
       }
     }
-    
+
+    .nav-links li:not(.special-menu-item) {
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0.375rem 0;
+        z-index: -1;
+        border-radius: 0.5rem;
+        background: rgb(var(--nav-accent) / 0.1);
+        opacity: 0;
+        scale: 0.85;
+        transition:
+          opacity 0.2s ease-in-out,
+          scale 0.2s ease-in-out;
+      }
+      a {
+        transition:
+          translate 0.2s ease-in-out,
+          text-shadow 0.2s ease-in-out;
+      }
+      &:hover {
+        &::before {
+          opacity: 1;
+          scale: 1;
+        }
+        a {
+          translate: 0 -1px;
+          text-shadow: 0 0 16px rgb(var(--nav-accent) / 0.5);
+        }
+      }
+    }
+
+    .nav-links li.active {
+      --_scale: 1;
+      font-weight: 600;
+    }
+
     /* Estilo especial para Ancora Solidario */
     .special-menu-item {
       @apply relative;
-      
+
       a {
-        @apply px-4 py-2 rounded-lg bg-primary bg-opacity-20 border-2 border-primary font-extrabold;
-        box-shadow: 0 0 15px theme('colors.primary / 0.3');
-        transition: all 0.3s ease;
+        @apply rounded-lg border-2 border-primary bg-primary bg-opacity-20 px-4 py-2 font-bold;
+        color: rgb(var(--color-primary));
+        box-shadow: 0 0 15px theme("colors.primary / 0.3");
+        transition: all 0.2s ease-in-out;
       }
-      
+
       &:hover a {
         @apply bg-opacity-30 border-opacity-100;
         transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 5px 20px theme('colors.primary / 0.5');
+        box-shadow: 0 5px 20px theme("colors.primary / 0.5");
       }
-      
+
       &::after {
         display: none !important;
       }
     }
-    
+
     &:hover li {
       --_translate: 100%;
       --_scale-delay: 200ms;
@@ -207,7 +276,70 @@ const isActive = (href) => {
       --_scale: 1;
       --_translate: 0;
       --_scale-delay: 0ms;
-      @apply text-primary;
+      color: rgb(var(--nav-accent));
+    }
+  }
+
+  header.nav {
+    background-color: transparent;
+  }
+
+  :global([data-theme="dark"]) .nav::before {
+    background: rgb(var(--color-dark) / 0.75);
+    border-bottom-color: rgb(255 255 255 / 0.08);
+  }
+
+  .nav--overlay {
+    --nav-accent: 255 255 255;
+    color: white;
+
+    > nav {
+      padding-block: 0.75rem;
+      transition: padding-block 0.3s ease-in-out;
+    }
+
+    .nav-links:not(.mobile-links),
+    :global(.nav-mobile-btn:not(.bg-transparent)) {
+      color: white;
+    }
+
+    &::before {
+      background: rgb(var(--color-dark) / 0.8);
+      border-bottom-color: rgb(255 255 255 / 0.08);
+      box-shadow: 0 8px 32px rgb(0 0 0 / 0.25);
+      opacity: 0;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0 0 -2rem 0;
+      z-index: -2;
+      pointer-events: none;
+      background: linear-gradient(
+        to bottom,
+        rgb(var(--color-dark) / 0.6),
+        transparent
+      );
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .special-menu-item a {
+      color: white;
+      background-color: rgb(var(--color-primary) / 0.6);
+      border-color: rgb(255 255 255 / 0.35);
+    }
+  }
+
+  :global(html[data-is-top="false"]) .nav--overlay {
+    > nav {
+      padding-block: 0;
+    }
+    &::before {
+      opacity: 1;
+    }
+    &::after {
+      opacity: 0;
     }
   }
 </style>

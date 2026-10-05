@@ -315,6 +315,7 @@ export const settings = {
           fields: [
             { name: "label", label: t("label"), widget: "string" },
             { name: "href", label: t("href"), widget: "string" },
+            { name: "special", label: "Destacado", widget: "boolean", required: false, default: false },
           ],
         },
 

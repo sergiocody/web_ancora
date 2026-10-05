@@ -146,9 +146,16 @@ const { slug } = Astro.params;
     }
   }
 
+  .hero--cinematic {
+    @screen sm {
+      min-height: 100svh;
+    }
+  }
+
   .hero--cinematic .media {
     @screen sm {
-      height: calc(100svh - 4rem);
+      height: 100svh;
+      max-height: none;
     }
   }
 
@@ -163,7 +170,7 @@ const { slug } = Astro.params;
 
   @media (prefers-reduced-motion: no-preference) {
     .hero--cinematic .media :global(img) {
-      animation: hero-kenburns 30s ease-in-out infinite alternate;
+      animation: hero-kenburns 20s ease-in-out infinite alternate;
       transform-origin: 50% 60%;
       will-change: transform;
     }

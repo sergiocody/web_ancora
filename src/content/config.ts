@@ -651,7 +651,8 @@ const config = defineCollection({
 			.array(
 				z.object({
 					href: z.string(),
-					label: z.string()
+					label: z.string(),
+					special: z.boolean().optional()
 				})
 			)
 			.optional(),
