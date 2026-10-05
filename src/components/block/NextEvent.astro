@@ -1,0 +1,154 @@
+---
+import { getCollection } from "astro:content";
+import { marked } from "marked";
+import Button from "@components/navigation/Button.astro";
+
+interface Props {
+  title?: string;
+  content?: string;
+  container?: string;
+  buttons?: { href: string; label: string; color?: string; icon?: string; icon_only?: boolean }[];
+}
+
+const { title, content, buttons, container } = Astro.props;
+const base_url = import.meta.env.BLOG_SLUG;
+const now = new Date();
+
+const upcoming = (await getCollection("eventos"))
+  .map((post) => ({ post, date: post.data.eventDate || post.data.pubDate }))
+  .filter(({ date }) => date > now)
+  .sort((a, b) => a.date.valueOf() - b.date.valueOf());
+
+const dateFormat = new Intl.DateTimeFormat("es-ES", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "Europe/Madrid",
+});
+const timeFormat = new Intl.DateTimeFormat("es-ES", {
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: "Europe/Madrid",
+});
+const units = [
+  { key: "days", label: "días" },
+  { key: "hours", label: "horas" },
+  { key: "minutes", label: "min" },
+  { key: "seconds", label: "seg" },
+];
+---
+
+<div class={`container-${container || "lg"}`} data-next-event-root>
+  <div class="card shadow-xl ring-1 ring-black/5">
+    {
+      upcoming.map(({ post, date }, index) => (
+        <article data-next-event data-date={date.toISOString()} hidden={index > 0}>
+          <div class="grid gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-12">
+            <div class="min-w-0">
+              {title && <p class="eyebrow">{title}</p>}
+              <h2 class="balance mt-2 text-2xl font-bold leading-tight text-slate-900 dark:text-white sm:text-3xl">
+                <a
+                  href={`/${base_url}/${post.slug}/`}
+                  class="transition-colors duration-200 ease-in-out hover:text-primary"
+                >
+                  {post.data.title}
+                </a>
+              </h2>
+              <p class="text-muted mt-2 text-base leading-relaxed first-letter:uppercase">
+                <time datetime={date.toISOString()}>
+                  {dateFormat.format(date)} · {timeFormat.format(date)} h
+                </time>
+                {post.data.location && <span> · {post.data.location}</span>}
+              </p>
+            </div>
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+              <div class="grid grid-cols-4 gap-2" role="timer" aria-label="Cuenta atrás">
+                {units.map((unit) => (
+                  <div class="min-w-[4rem] rounded-lg bg-slate-100 px-2 py-2 text-center dark:bg-white/5">
+                    <span
+                      class="block font-heading text-2xl font-bold tabular-nums text-slate-900 dark:text-white sm:text-3xl"
+                      data-unit={unit.key}
+                    >
+                      --
+                    </span>
+                    <span class="text-muted block text-xs font-semibold uppercase tracking-widest">
+                      {unit.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <a href={`/${base_url}/${post.slug}/`} class="btn surface-primary justify-center">
+                Más información
+              </a>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+    <div data-next-event-empty hidden={upcoming.length > 0}>
+      <div class="grid gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-12">
+        <div class="min-w-0">
+          {title && <p class="eyebrow">{title}</p>}
+          {
+            content && (
+              <div
+                class="richtext no-lead text-muted mt-2"
+                set:html={marked.parse(content)}
+              />
+            )
+          }
+        </div>
+        {
+          buttons && (
+            <div class="flex flex-wrap gap-4">
+              {buttons.map((btn) => (
+                <Button {...btn} />
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const pad = (value: number) => String(value).padStart(2, "0");
+
+  function initNextEvent() {
+    document
+      .querySelectorAll<HTMLElement>("[data-next-event-root]")
+      .forEach((root) => {
+        // Pick on the client too, so a stale build never counts down to a past concert
+        const events = [
+          ...root.querySelectorAll<HTMLElement>("[data-next-event]"),
+        ];
+        const next = events.find(
+          (el) => Date.parse(el.dataset.date!) > Date.now(),
+        );
+        events.forEach((el) => (el.hidden = el !== next));
+        root.querySelector<HTMLElement>("[data-next-event-empty]")!.hidden =
+          !!next;
+        if (!next) return;
+
+        const target = Date.parse(next.dataset.date!);
+        const fields = next.querySelectorAll<HTMLElement>("[data-unit]");
+        const tick = () => {
+          const diff = Math.max(0, target - Date.now());
+          if (diff === 0 || !root.isConnected) clearInterval(timer);
+          const values: Record<string, number> = {
+            days: Math.floor(diff / 86_400_000),
+            hours: Math.floor(diff / 3_600_000) % 24,
+            minutes: Math.floor(diff / 60_000) % 60,
+            seconds: Math.floor(diff / 1000) % 60,
+          };
+          fields.forEach((el) => (el.textContent = pad(values[el.dataset.unit!])));
+        };
+        const timer = setInterval(tick, 1000);
+        tick();
+      });
+  }
+
+  document.addEventListener("astro:page-load", initNextEvent);
+</script>

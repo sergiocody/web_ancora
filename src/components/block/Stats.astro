@@ -1,0 +1,76 @@
+---
+import { marked } from "marked";
+
+interface Props {
+  title?: string;
+  content?: string;
+  container?: string;
+  stats?: { value: number; label: string; prefix?: string; suffix?: string }[];
+}
+
+const { title, content, stats = [], container } = Astro.props;
+---
+
+<div class={`container-${container || "lg"}`}>
+  {
+    (title || content) && (
+      <div class="mx-auto max-w-2xl text-center">
+        {title && (
+          <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
+        )}
+        {content && (
+          <div
+            class="mt-4 text-lg leading-relaxed opacity-80"
+            set:html={marked.parse(content)}
+          />
+        )}
+      </div>
+    )
+  }
+  <dl class="mt-12 grid gap-8 sm:grid-cols-3 sm:gap-6">
+    {
+      stats.map((stat) => (
+        <div class="flex flex-col-reverse items-center gap-2 text-center">
+          <dt class="text-sm font-semibold uppercase tracking-[0.2em] opacity-70">
+            {stat.label}
+          </dt>
+          <dd class="font-heading text-6xl font-bold tabular-nums sm:text-7xl">
+            {stat.prefix}<span data-count-to={stat.value}>{stat.value}</span>{stat.suffix}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</div>
+
+<script>
+  function initStats() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(({ isIntersecting, target }) => {
+          if (!isIntersecting) return;
+          observer.unobserve(target);
+          const el = target as HTMLElement;
+          const end = Number(el.dataset.countTo);
+          const start = performance.now();
+          const step = (time: number) => {
+            const progress = Math.min((time - start) / 1600, 1);
+            el.textContent = String(Math.round(end * (1 - (1 - progress) ** 3)));
+            if (progress < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+      },
+      { threshold: 0.6 },
+    );
+
+    document.querySelectorAll<HTMLElement>("[data-count-to]").forEach((el) => {
+      el.textContent = "0";
+      observer.observe(el);
+    });
+  }
+
+  document.addEventListener("astro:page-load", initStats);
+</script>

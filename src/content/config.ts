@@ -19,6 +19,8 @@ const blocks = z
 			component: z.string(),
 			reverse: z.boolean().optional(),
 			title: z.string().optional(),
+			eyebrow: z.string().optional(),
+			badge: z.string().optional(),
 			thumbnail: z.string().optional(),
 			content: z.string().optional(),
 			block_class: z.string().optional(),
@@ -67,6 +69,16 @@ const blocks = z
 						name: z.string(),
 						photo: z.string(),
 						role: z.string().optional(),
+					})
+				)
+				.optional(),
+			stats: z
+				.array(
+					z.object({
+						value: z.number(),
+						label: z.string(),
+						prefix: z.string().optional(),
+						suffix: z.string().optional(),
 					})
 				)
 				.optional(),
@@ -148,6 +160,12 @@ const eventos = defineCollection({
 			.string()
 			.or(z.date())
 			.transform((val) => new Date(val)),
+		eventDate: z
+			.string()
+			.or(z.date())
+			.transform((val) => new Date(val))
+			.optional(),
+		location: z.string().optional(),
 
 		nav: z
 			.object({
@@ -472,6 +490,7 @@ const page = defineCollection({
 		container: z.string().optional(),
 		hero_template: z.string().optional(),
 		hero_logo: z.string().optional(),
+		hero_image_position: z.string().optional(),
 
 		hero_buttons: z
 			.array(

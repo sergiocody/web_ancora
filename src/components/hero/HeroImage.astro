@@ -9,6 +9,7 @@ const {
   thumbnail,
   hero_buttons,
   hero_logo,
+  hero_image_position,
   intro,
   tag,
   filter,
@@ -50,6 +51,7 @@ const { slug } = Astro.params;
           loading="eager"
           layout="fill"
           position="entropy"
+          objectPosition={hero_image_position}
           artDirectives={[
             {
               media: "(max-width: 500px)",
@@ -70,7 +72,7 @@ const { slug } = Astro.params;
   }
 
   <div
-    class="absolute inset-0 z-10 grid place-items-center bg-dark bg-opacity-20"
+    class="hero__overlay absolute inset-0 z-10 grid place-items-center bg-dark bg-opacity-20"
   >
     <div class="container-xl py-8">
       <div class="max-w-3xl">
@@ -84,7 +86,7 @@ const { slug } = Astro.params;
         {
           hero_logo && hero_logo.length > 0 ? (
             <div class="my-8 text-left">
-              <img src={hero_logo} alt={title} class="w-full max-w-2xl h-auto" style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));" loading="eager" />
+              <img src={hero_logo} alt={title} class="hero__logo w-full max-w-md h-auto" style="filter: brightness(0) invert(1) drop-shadow(0 8px 24px rgba(0,0,0,0.45));" loading="eager" />
             </div>
           ) : (
             <h1 class="title">
@@ -92,7 +94,7 @@ const { slug } = Astro.params;
             </h1>
           )
         }
-        {intro && !hero_logo && <div class="subtitle balance py2"> {intro}</div>}
+        {intro && <div class="hero__intro subtitle balance py-2">{intro}</div>}
 
         {
           tag && (
@@ -119,7 +121,7 @@ const { slug } = Astro.params;
         }
         {
           hero_buttons && hero_buttons.length > 0 && (
-            <div class="flex flex-wrap gap-4 py-8">
+            <div class="hero__actions flex flex-wrap gap-4 py-8">
               {hero_buttons.map((btn) => (
                 <Button {...btn} />
               ))}
@@ -141,6 +143,56 @@ const { slug } = Astro.params;
   .media {
     @screen sm {
       max-height: calc(100svh - 4rem);
+    }
+  }
+
+  .hero--cinematic .media {
+    @screen sm {
+      height: calc(100svh - 4rem);
+    }
+  }
+
+  .hero--cinematic .hero__overlay {
+    background: linear-gradient(
+      90deg,
+      rgb(var(--color-dark) / 0.75) 0%,
+      rgb(var(--color-dark) / 0.35) 55%,
+      rgb(var(--color-dark) / 0.1) 100%
+    );
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero--cinematic .media :global(img) {
+      animation: hero-kenburns 30s ease-in-out infinite alternate;
+      transform-origin: 50% 60%;
+      will-change: transform;
+    }
+    .hero--cinematic .hero__logo,
+    .hero--cinematic .hero__intro,
+    .hero--cinematic .hero__actions {
+      animation: hero-reveal 0.8s ease-out both;
+    }
+    .hero--cinematic .hero__intro {
+      animation-delay: 0.2s;
+    }
+    .hero--cinematic .hero__actions {
+      animation-delay: 0.4s;
+    }
+  }
+
+  @keyframes hero-kenburns {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.15);
+    }
+  }
+
+  @keyframes hero-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
     }
   }
 </style>

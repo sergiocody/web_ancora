@@ -77,6 +77,19 @@ export const post = {
       format: "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
       default: new Date().toISOString(),
     },
+    {
+      label: t("event_date"),
+      name: "eventDate",
+      widget: "datetime",
+      format: "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+      required: false,
+    },
+    {
+      label: t("location"),
+      name: "location",
+      widget: "string",
+      required: false,
+    },
 
     {
       label: t("featured_image"),

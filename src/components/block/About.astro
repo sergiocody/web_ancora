@@ -1,0 +1,148 @@
+---
+import { Picture } from "astro-imagetools/components";
+import { marked } from "marked";
+import Intersecting from "@components/common/Intersecting.vue";
+import Button from "@components/navigation/Button.astro";
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  content?: string;
+  badge?: string;
+  container?: string;
+  images?: { title?: string; image: string }[];
+  features?: { label?: string; content?: string }[];
+  buttons?: { href: string; label: string; color?: string; icon?: string; icon_only?: boolean }[];
+}
+
+const {
+  eyebrow,
+  title,
+  content,
+  badge,
+  container,
+  images = [],
+  features = [],
+  buttons,
+} = Astro.props;
+const [main, secondary] = images;
+---
+
+<Intersecting client:visible className="w-full">
+  <div
+    class={`container-${container || "lg"} grid items-center gap-12 lg:grid-cols-12 lg:gap-16`}
+  >
+    {
+      main && (
+        <div class="fade-up relative mx-auto w-full max-w-2xl pb-12 pl-12 sm:pb-16 sm:pl-16 lg:col-span-7 lg:max-w-none">
+          <div class="overflow-hidden rounded-xl shadow-xl">
+            <Picture
+              src={main.image}
+              alt={main.title || title || ""}
+              aspect={1.6}
+              position="centre"
+              layout="fullWidth"
+              breakpoints={[400, 600, 800, 1080]}
+              sizes="(min-width: 1024px) 620px, 100vw"
+            />
+          </div>
+          {secondary && (
+            <div class="about-block__float absolute bottom-0 left-0 z-10 w-1/2 overflow-hidden rounded-xl shadow-2xl ring-4 ring-white dark:ring-slate-900 sm:ring-8">
+              <Picture
+                src={secondary.image}
+                alt={secondary.title || ""}
+                aspect={4 / 3}
+                position="centre"
+                layout="fullWidth"
+                breakpoints={[300, 500, 800]}
+                sizes="(min-width: 1024px) 310px, 50vw"
+              />
+            </div>
+          )}
+          {badge && (
+            <p class="surface-primary absolute -top-4 left-6 z-20 rounded-xl px-4 py-3 font-heading text-xl font-bold shadow-lg sm:left-8 sm:text-2xl lg:-top-6">
+              {badge}
+            </p>
+          )}
+        </div>
+      )
+    }
+
+    <div class={main ? "lg:col-span-5" : "lg:col-span-12"}>
+      {eyebrow && <p class="eyebrow fade-up">{eyebrow}</p>}
+      {
+        title && (
+          <h2 class="fade-up mt-4 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+            {title}
+          </h2>
+        )
+      }
+      {
+        content && (
+          <div
+            class="fade-up text-muted mt-6 text-lg leading-relaxed [&_strong]:font-semibold [&_strong]:text-primary"
+            set:html={marked.parse(content)}
+          />
+        )
+      }
+      {
+        buttons && (
+          <div class="fade-up mt-8 flex flex-wrap gap-4">
+            {buttons.map((btn) => (
+              <Button {...btn} />
+            ))}
+          </div>
+        )
+      }
+    </div>
+
+    {
+      features.length > 0 && (
+        <ol class="grid gap-8 md:grid-cols-3 lg:col-span-12">
+          {features.map((feature, index) => (
+            <li
+              class="fade-up border-t-2 border-primary/20 pt-6"
+              style={`--animation-delay: ${(index + 1) * 150}ms`}
+            >
+              <span
+                class="font-heading text-4xl font-bold leading-none text-primary"
+                aria-hidden="true"
+              >
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3 class="mt-4 text-lg font-semibold text-slate-900 dark:text-white">
+                {feature.label}
+              </h3>
+              {feature.content && (
+                <p
+                  class="text-muted mt-2 text-base leading-relaxed [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:decoration-primary/30 [&_a]:underline-offset-4 [&_a]:transition-colors [&_a]:duration-200 [&_a:hover]:decoration-primary"
+                  set:html={marked.parseInline(feature.content)}
+                />
+              )}
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </div>
+</Intersecting>
+
+<style is:global>
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .about-block__float {
+        animation: about-block-float linear both;
+        animation-timeline: view();
+      }
+    }
+  }
+
+  @keyframes about-block-float {
+    from {
+      transform: translateY(32px);
+    }
+    to {
+      transform: translateY(-32px);
+    }
+  }
+</style>
