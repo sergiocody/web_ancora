@@ -520,6 +520,8 @@ const config = defineCollection({
 		title: z.string().optional(),
 		description: z.string().optional(),
 		newsletter_text: z.string().optional(),
+		show_newsletter: z.boolean().optional(),
+		email: z.string().optional(),
 		footer_text: z.string().optional(),
 		per_page: z.number().optional(),
 		intro: z.string().optional(),
