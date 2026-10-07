@@ -75,7 +75,7 @@ const { slug } = Astro.params;
     class="hero__overlay absolute inset-0 z-10 grid place-items-center bg-dark bg-opacity-20"
   >
     <div class="container-xl py-8">
-      <div class="max-w-3xl">
+      <div class="hero__content max-w-3xl">
         {
           pubDate && (
             <span class="text-overline">
@@ -160,12 +160,25 @@ const { slug } = Astro.params;
   }
 
   .hero--cinematic .hero__overlay {
-    background: linear-gradient(
-      90deg,
-      rgb(var(--color-dark) / 0.75) 0%,
-      rgb(var(--color-dark) / 0.35) 55%,
-      rgb(var(--color-dark) / 0.1) 100%
+    background: radial-gradient(
+      ellipse at center,
+      rgb(var(--color-dark) / 0.6) 0%,
+      rgb(var(--color-dark) / 0.3) 70%,
+      rgb(var(--color-dark) / 0.15) 100%
     );
+  }
+
+  .hero--cinematic .hero__content {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .hero--cinematic .hero__logo {
+    margin-inline: auto;
+  }
+
+  .hero--cinematic .hero__actions {
+    justify-content: center;
   }
 
   @media (prefers-reduced-motion: no-preference) {

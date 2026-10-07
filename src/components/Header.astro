@@ -24,13 +24,8 @@ const isHome = currentPath === "";
   <nav class="container-xl flex flex-nowrap items-stretch gap-6">
     <a
       href="/"
-      aria-label={title}
-      class="grid place-items-center py-3"
-      ><img
-        src={logo.src}
-        alt={title}
-        class={`h-10 ${isHome ? "brightness-0 invert xl:h-12" : "dark:brightness-0 dark:invert"}`}
-      /></a
+      class="grid place-items-center py-3 font-heading text-sm uppercase tracking-[0.14em]"
+      >Inicio</a
     >
     {
       menu && (
