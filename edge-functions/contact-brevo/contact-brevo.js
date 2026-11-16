@@ -1,5 +1,3 @@
-import process from "node:process";
-
 export default async (request) => {
   // Leer datos del body JSON
   let name, email, message, topic, phone;
@@ -36,9 +34,9 @@ export default async (request) => {
     );
   }
 
-  const BREVO_API_KEY = process.env.BREVO_API_KEY;
-  const TO_EMAIL = process.env.TO_EMAIL_ADDRESS || process.env.FROM_EMAIL_ADDRESS;
-  const FROM_EMAIL = process.env.FROM_EMAIL_ADDRESS;
+  const BREVO_API_KEY = Deno.env.get("BREVO_API_KEY");
+  const FROM_EMAIL = Deno.env.get("FROM_EMAIL_ADDRESS");
+  const TO_EMAIL = Deno.env.get("TO_EMAIL_ADDRESS") || FROM_EMAIL;
 
   if (!BREVO_API_KEY) {
     console.error("BREVO_API_KEY no configurada");

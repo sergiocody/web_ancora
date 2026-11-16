@@ -100,7 +100,7 @@
                   name="message"
                   id=""
                   cols="30"
-                  rows="2"
+                  rows="6"
                   ref="textarea"
                   v-model="input"
                 ></textarea>
@@ -372,6 +372,10 @@ watch(
   textarea,
   .select {
     @apply block w-full rounded-2xl px-3 py-2.5 focus:outline-primary;
+  }
+  textarea {
+    min-height: 10rem;
+    resize: vertical;
   }
   .field-label {
     @apply text-sm font-medium;

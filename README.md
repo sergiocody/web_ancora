@@ -137,6 +137,54 @@ El sitio estará disponible en `http://localhost:4321`
 - **Ubicación**: `src/content/page/`
 - **Sistema de Bloques**: TextImage, Features, ImageGallery, Members, RichText
 
+### Portada completa (archivada)
+
+La portada publicada (`src/content/page/index.mdx`) es una versión reducida: solo enlaza a Inicio, Contacto y Ancora Solidario, y no muestra eventos, galería ni miembros.
+
+La portada completa anterior se conserva en `src/content/page/_inicio-completo.mdx`. El prefijo `_` hace que Astro la ignore, así que no se publica. Incluye: tarjeta de próximo concierto (`NextEvent`), botón a eventos, enlaces a "Conoce nuestra historia" (`/sobre-nosotros/`) y a Rubén Larrea (`/miembros/director/`), "Próximos eventos" (`RecentItems`) y "¿Te gustaría cantar con nosotros?".
+
+Para volver a usarla:
+
+1. Renombra la portada reducida (por ejemplo, `git mv src/content/page/index.mdx src/content/page/_inicio-reducido.mdx`).
+2. Renombra `_inicio-completo.mdx` a `index.mdx` y borra la línea de comentario inicial del frontmatter.
+3. Restaura los menús en `src/content/config/navigation.mdx`:
+
+```yaml
+main_menu:
+  - label: Sobre nosotros
+    href: /sobre-nosotros
+  - label: Galería
+    href: /galeria
+  - label: Eventos
+    href: /eventos
+  - label: Miembros
+    href: /miembros
+  - label: Contacto
+    href: "#contact"
+  - label: Ancora Solidario
+    href: /ancora-solidario
+    special: true
+footer_menus:
+  - label: Descubre
+    links:
+      - label: Inicio
+        href: /
+      - label: Sobre nosotros
+        href: /sobre-nosotros
+      - label: Miembros
+        href: /miembros
+      - label: Galería
+        href: /galeria
+  - label: Participa
+    links:
+      - label: Eventos
+        href: /eventos
+      - label: Ancora Solidario
+        href: /ancora-solidario
+      - label: Contacto
+        href: "#contact"
+```
+
 ## 📧 Funcionalidades de Contacto
 
 ### Formulario de Contacto
