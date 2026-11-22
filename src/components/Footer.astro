@@ -14,10 +14,9 @@ let navigation = await getEntry("config", "navigation");
 const showNewsletter =
   !!import.meta.env.NEWSLETTER_PROVIDER && about.data.show_newsletter === true;
 const newsletterType = import.meta.env.NEWSLETTER_PROVIDER || "mailchimp";
-const email = contact.data.email;
 ---
 
-<footer class="surface-dark relative">
+<footer class="surface-dark relative border-t-4 border-primary">
   <div class="container-xl grid gap-12 py-16 sm:py-20 lg:grid-cols-12 lg:gap-8">
     <div class="lg:col-span-5">
       <a href="/" aria-label={t("back_to_home")} class="inline-block">
@@ -61,7 +60,7 @@ const email = contact.data.email;
 
     <nav
       aria-label="Pie de página"
-      class="grid gap-8 sm:grid-cols-3 lg:col-span-7"
+      class="grid gap-8 sm:grid-cols-2 lg:col-span-7"
     >
       {
         navigation.data.footer_menus &&
@@ -84,34 +83,6 @@ const email = contact.data.email;
               </ul>
             </div>
           ))
-      }
-      {
-        email && (
-          <div>
-            <h3 class="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
-              Contacto
-            </h3>
-            <ul class="mt-4 space-y-3">
-              <li>
-                <a
-                  href={`mailto:${email}`}
-                  class="link-underline break-all text-white/80 transition-colors duration-200 ease-in-out hover:text-white"
-                >
-                  {email}
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contact"
-                  data-topic="Quiero unirme al coro"
-                  class="link-underline text-white/80 transition-colors duration-200 ease-in-out hover:text-white"
-                >
-                  Quiero unirme al coro
-                </a>
-              </li>
-            </ul>
-          </div>
-        )
       }
     </nav>
 
